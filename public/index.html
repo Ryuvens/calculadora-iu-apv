@@ -472,48 +472,6 @@
         </footer>
     </div>
 
-    <script type="module">
-        // Módulo principal de la aplicación
-        console.log('Calculadora IU con Simulador APV - Cargando...');
-
-        // Importar módulos
-        import { initializeIUModule } from './src/features/iu/index.js';
-        import { initializeUFUTMModule } from './src/features/ufutm/index.js';
-
-        // Funcionalidad de pestañas
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remover clase active de todas las pestañas y contenidos
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(tc => tc.classList.remove('active'));
-
-                    // Agregar clase active a la pestaña clickeada
-                    this.classList.add('active');
-
-                    // Mostrar el contenido correspondiente
-                    const targetTab = this.getAttribute('data-tab');
-                    const targetContent = document.getElementById(targetTab);
-                    if (targetContent) {
-                        targetContent.classList.add('active');
-                    }
-                });
-            });
-
-            // Inicializar módulos
-            console.log('🚀 Inicializando módulos...');
-            
-            // Inicializar módulo UF/UTM
-            initializeUFUTMModule();
-            
-            // Inicializar módulo IU
-            initializeIUModule();
-            
-            console.log('✅ Aplicación cargada correctamente');
-        });
-    </script>
+    <script type="module" src="../src/app.js"></script>
 </body>
 </html>

@@ -18,9 +18,10 @@ export class IUView {
      * @param {Object} resultado - Resultado del cálculo
      */
     renderResultado(resultado) {
+        console.log('🎨 Renderizando resultado:', resultado);
         const container = document.getElementById('resultado-iu');
         if (!container) {
-            console.error('Contenedor de resultado no encontrado');
+            console.error('❌ Contenedor de resultado no encontrado');
             return;
         }
 
@@ -70,9 +71,10 @@ export class IUView {
      * @param {number} indiceAplicado - Índice del tramo aplicado (-1 si ninguno)
      */
     renderTablaTramos(tramos, indiceAplicado = -1) {
+        console.log('📊 Renderizando tabla tramos:', tramos?.length, 'tramos, índice aplicado:', indiceAplicado);
         const container = document.getElementById('tabla-sii-container');
         if (!container) {
-            console.error('Contenedor de tabla no encontrado');
+            console.error('❌ Contenedor de tabla no encontrado');
             return;
         }
 
@@ -135,11 +137,12 @@ export class IUView {
         const btn = document.getElementById('btn-mostrar-tabla');
         
         if (!container || !btn) {
-            console.error('Elementos de tabla no encontrados');
+            console.error('❌ Elementos de tabla no encontrados');
             return;
         }
 
         this.tablaVisible = !this.tablaVisible;
+        console.log('🔄 Tabla visible:', this.tablaVisible);
         
         if (this.tablaVisible) {
             container.style.display = 'block';

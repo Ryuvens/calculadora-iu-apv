@@ -16,11 +16,50 @@ import { parseCLP } from '../../core/helpers/formatters.js';
 export class IUController {
     constructor() {
         this.view = new IUView();
-        this.tramos = null;
-        this.resultadoActual = null;
+        this.tramosActuales = null;
         this.isCalculando = false;
+    }
+
+    /**
+     * Inicializa el controlador
+     */
+    async init() {
+        console.log('🧮 Inicializando IUController...');
         
-        this.setupEventListeners();
+        try {
+            // Cargar tramos
+            await this.loadTramos();
+            
+            // Configurar event listeners
+            this.setupEventListeners();
+            
+            console.log('✅ IUController inicializado correctamente');
+            return true;
+        } catch (error) {
+            console.error('❌ Error inicializando IUController:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Carga los tramos del período actual
+     */
+    async loadTramos() {
+        try {
+            console.log('📊 Cargando tramos...');
+            this.tramosActuales = await getTramosData(2025, 9);
+            
+            if (this.tramosActuales && this.tramosActuales.length > 0) {
+                console.log('✅ Tramos cargados:', this.tramosActuales.length, 'tramos');
+                // Renderizar tabla inicial sin resaltar
+                this.view.renderTablaTramos(this.tramosActuales, -1);
+            } else {
+                throw new Error('No se pudieron cargar los tramos');
+            }
+        } catch (error) {
+            console.error('❌ Error cargando tramos:', error);
+            this.view.mostrarError('Error cargando tabla de tramos. Intente recargar la página.');
+        }
     }
 
     /**
@@ -28,50 +67,39 @@ export class IUController {
      * CRÍTICO: Solo botón calcular y tecla Enter, NO on-input
      */
     setupEventListeners() {
+        console.log('🔗 Configurando event listeners...');
+        
         // Botón calcular: click
         const btnCalcular = document.getElementById('btn-calcular');
         if (btnCalcular) {
+            console.log('✅ Botón calcular encontrado');
             btnCalcular.addEventListener('click', () => this.calcular());
+        } else {
+            console.error('❌ Botón calcular no encontrado');
         }
 
         // Campo renta: Enter key (keydown event, code 13)
         const inputRenta = document.getElementById('renta-imponible');
         if (inputRenta) {
+            console.log('✅ Input renta encontrado');
             inputRenta.addEventListener('keydown', (event) => {
                 if (event.code === 'Enter' || event.keyCode === 13) {
                     event.preventDefault();
+                    console.log('⌨️ Enter presionado');
                     this.calcular();
                 }
             });
+        } else {
+            console.error('❌ Input renta no encontrado');
         }
 
         // Botón mostrar/ocultar tabla
         const btnMostrarTabla = document.getElementById('btn-mostrar-tabla');
         if (btnMostrarTabla) {
+            console.log('✅ Botón tabla encontrado');
             btnMostrarTabla.addEventListener('click', () => this.toggleTabla());
-        }
-
-        // Cargar tramos al inicializar
-        this.cargarTramos();
-    }
-
-    /**
-     * Carga los tramos del período actual
-     */
-    async cargarTramos() {
-        try {
-            const periodo = this.obtenerPeriodoActual();
-            this.tramos = await getTramosData(periodo.year, periodo.month);
-            
-            if (this.tramos && this.tramos.length > 0) {
-                this.view.renderTablaTramos(this.tramos, -1); // Sin resaltar
-                console.log('✅ Tramos cargados correctamente');
-            } else {
-                throw new Error('No se pudieron cargar los tramos');
-            }
-        } catch (error) {
-            console.error('Error cargando tramos:', error);
-            this.view.mostrarError('Error cargando tabla de tramos. Intente recargar la página.');
+        } else {
+            console.error('❌ Botón tabla no encontrado');
         }
     }
 
@@ -80,8 +108,11 @@ export class IUController {
      * CRÍTICO: Solo se ejecuta con botón o Enter
      */
     async calcular() {
+        console.log('🧮 Iniciando cálculo...');
+        
         if (this.isCalculando) {
-            return; // Evitar cálculos múltiples simultáneos
+            console.log('⏳ Cálculo ya en progreso, ignorando...');
+            return;
         }
 
         try {
@@ -90,6 +121,7 @@ export class IUController {
 
             // 1. Obtener RLI del input
             const rli = this.obtenerRLIDelInput();
+            console.log('💰 RLI obtenida:', rli);
             
             if (!isValidRenta(rli)) {
                 this.view.mostrarError(ERRORS.INVALID_RENTA);
@@ -97,28 +129,31 @@ export class IUController {
             }
 
             // 2. Verificar que los tramos estén cargados
-            if (!this.tramos || this.tramos.length === 0) {
-                await this.cargarTramos();
-                if (!this.tramos || this.tramos.length === 0) {
+            if (!this.tramosActuales || this.tramosActuales.length === 0) {
+                await this.loadTramos();
+                if (!this.tramosActuales || this.tramosActuales.length === 0) {
                     this.view.mostrarError('No se pudieron cargar los tramos. Intente recargar la página.');
                     return;
                 }
             }
 
             // 3. Ejecutar computeImpuestoUnico
-            this.resultadoActual = computeImpuestoUnico(rli, this.tramos);
+            console.log('🔢 Calculando impuesto...');
+            const resultado = computeImpuestoUnico(rli, this.tramosActuales);
+            console.log('✅ Resultado calculado:', resultado);
             
             // 4. Mostrar resultado
-            this.view.renderResultado(this.resultadoActual);
+            this.view.renderResultado(resultado);
             
             // 5. Resaltar tramo en tabla
-            const indiceAplicado = obtenerIndiceTramoAplicado(rli, this.tramos);
-            this.view.renderTablaTramos(this.tramos, indiceAplicado);
+            const indiceAplicado = obtenerIndiceTramoAplicado(rli, this.tramosActuales);
+            console.log('📍 Índice tramo aplicado:', indiceAplicado);
+            this.view.renderTablaTramos(this.tramosActuales, indiceAplicado);
             
-            console.log('✅ Cálculo completado:', this.resultadoActual);
+            console.log('✅ Cálculo completado exitosamente');
 
         } catch (error) {
-            console.error('Error en cálculo:', error);
+            console.error('❌ Error en cálculo:', error);
             this.view.mostrarError(error.message || 'Error en el cálculo del impuesto');
         } finally {
             this.isCalculando = false;
@@ -137,6 +172,7 @@ export class IUController {
         }
 
         const valor = input.value.trim();
+        console.log('📝 Valor del input:', valor);
         
         if (!valor) {
             throw new Error('Debe ingresar un monto de renta');
@@ -144,6 +180,7 @@ export class IUController {
 
         // Usar parseCLP para manejar formatos con $ y puntos
         const rli = parseCLP(valor);
+        console.log('💱 RLI parseada:', rli);
         
         if (rli <= 0) {
             throw new Error('La renta debe ser mayor a cero');
@@ -153,21 +190,10 @@ export class IUController {
     }
 
     /**
-     * Obtiene el período actual
-     * @returns {Object} Período con año y mes
-     */
-    obtenerPeriodoActual() {
-        // Por ahora usar septiembre 2025, en el futuro se puede hacer dinámico
-        return {
-            year: 2025,
-            month: 9
-        };
-    }
-
-    /**
      * Alterna la visibilidad de la tabla
      */
     toggleTabla() {
+        console.log('🔄 Alternando tabla...');
         this.view.toggleTabla();
     }
 
@@ -175,9 +201,9 @@ export class IUController {
      * Limpia el resultado actual
      */
     limpiarResultado() {
-        this.resultadoActual = null;
+        console.log('🧹 Limpiando resultado...');
         this.view.limpiarResultado();
-        this.view.renderTablaTramos(this.tramos, -1); // Sin resaltar
+        this.view.renderTablaTramos(this.tramosActuales, -1); // Sin resaltar
     }
 
     /**
@@ -193,7 +219,7 @@ export class IUController {
      * @returns {Array|null} Array de tramos o null
      */
     getTramos() {
-        return this.tramos;
+        return this.tramosActuales;
     }
 
     /**
@@ -209,46 +235,18 @@ export class IUController {
             'tabla-sii-container'
         ];
 
+        let todosPresentes = true;
         for (const id of elementosRequeridos) {
             const elemento = document.getElementById(id);
             if (!elemento) {
-                console.error(`Elemento requerido no encontrado: ${id}`);
-                return false;
+                console.error(`❌ Elemento requerido no encontrado: ${id}`);
+                todosPresentes = false;
+            } else {
+                console.log(`✅ Elemento encontrado: ${id}`);
             }
         }
 
-        return true;
-    }
-
-    /**
-     * Inicializa el controlador
-     * @returns {boolean} true si se inicializó correctamente
-     */
-    inicializar() {
-        console.log('🚀 Inicializando Calculadora IU...');
-        
-        if (!this.validarElementos()) {
-            console.error('❌ Elementos requeridos no encontrados');
-            return false;
-        }
-
-        console.log('✅ Calculadora IU inicializada correctamente');
-        return true;
-    }
-}
-
-// Instancia singleton del controlador
-export const iuController = new IUController();
-
-// Auto-inicializar si estamos en el navegador
-if (typeof window !== 'undefined') {
-    // Esperar a que el DOM esté listo
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            iuController.inicializar();
-        });
-    } else {
-        iuController.inicializar();
+        return todosPresentes;
     }
 }
 
@@ -260,10 +258,6 @@ if (typeof window !== 'undefined') {
     const controller = new IUController();
     const elementosValidos = controller.validarElementos();
     console.assert(typeof elementosValidos === 'boolean', 'validarElementos should return boolean');
-    
-    // Test de obtención de período
-    const periodo = controller.obtenerPeriodoActual();
-    console.assert(periodo.year === 2025 && periodo.month === 9, 'Período actual should be 2025-09');
     
     console.log('✅ Todos los tests de IU Controller pasaron correctamente');
     console.groupEnd();
