@@ -274,6 +274,22 @@ export class IUView {
     }
 }
 
+// Exportar funciones individuales para uso directo
+export function renderResultado(resultado) {
+    const view = new IUView();
+    return view.renderResultado(resultado);
+}
+
+export function renderTablaTramos(tramos, indiceAplicado = -1) {
+    const view = new IUView();
+    return view.renderTablaTramos(tramos, indiceAplicado);
+}
+
+export function toggleTabla() {
+    const view = new IUView();
+    return view.toggleTabla();
+}
+
 // Tests básicos
 if (typeof window !== 'undefined') {
     console.group('🧪 Tests - IU View');

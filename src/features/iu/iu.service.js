@@ -15,29 +15,39 @@ import { fmtCLP, fmtFactor, fmtPercentage } from '../../core/helpers/formatters.
  * @returns {Object} Resultado del cálculo
  */
 export function computeImpuestoUnico(rli, tramos) {
+    console.log('🔢 computeImpuestoUnico llamado con RLI:', rli);
+    console.log('📊 Tramos recibidos:', tramos?.length, 'tramos');
+    
     // Validar entrada
     if (!isValidRenta(rli)) {
+        console.error('❌ RLI no válida:', rli);
         throw new Error(ERRORS.INVALID_RENTA);
     }
 
     if (!tramos || !Array.isArray(tramos) || tramos.length === 0) {
+        console.error('❌ Tabla de tramos no válida:', tramos);
         throw new Error('Tabla de tramos no válida');
     }
 
     // Encontrar el tramo aplicable
+    console.log('🔍 Buscando tramo aplicable...');
     const tramoAplicado = encontrarTramoAplicado(rli, tramos);
     
     if (!tramoAplicado) {
+        console.error('❌ No se encontró tramo para RLI:', rli);
         throw new Error('No se encontró tramo aplicable para la renta ingresada');
     }
 
+    console.log('✅ Tramo encontrado:', tramoAplicado);
+
     // Aplicar fórmula oficial: Impuesto = max(0, RLI × Factor - Rebaja)
     const impuesto = Math.max(0, (rli * tramoAplicado.factor) - tramoAplicado.rebaja);
+    console.log('🧮 Cálculo:', rli, '×', tramoAplicado.factor, '-', tramoAplicado.rebaja, '=', impuesto);
     
     // Calcular tasa efectiva
     const tasaEfectiva = rli > 0 ? impuesto / rli : 0;
 
-    return {
+    const resultado = {
         impuesto: Math.round(impuesto), // Redondear a entero
         tramo: tramoAplicado,
         factor: tramoAplicado.factor,
@@ -51,6 +61,9 @@ export function computeImpuestoUnico(rli, tramos) {
         tasaEfectivaFormateada: fmtPercentage(tasaEfectiva),
         rliFormateada: fmtCLP(rli)
     };
+    
+    console.log('✅ Resultado calculado:', resultado);
+    return resultado;
 }
 
 /**

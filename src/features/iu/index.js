@@ -4,8 +4,11 @@
  */
 
 // Exportar clases principales
-export { IUController, iuController } from './iu.controller.js';
+export { IUController } from './iu.controller.js';
 export { IUView } from './iu.view.js';
+
+// Exportar funciones de vista
+export { renderResultado, renderTablaTramos, toggleTabla } from './iu.view.js';
 
 // Exportar funciones de servicio
 export {

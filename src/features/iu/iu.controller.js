@@ -250,6 +250,9 @@ export class IUController {
     }
 }
 
+// Exportar la clase
+export { IUController };
+
 // Tests básicos
 if (typeof window !== 'undefined') {
     console.group('🧪 Tests - IU Controller');
