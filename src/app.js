@@ -4,7 +4,6 @@
  */
 
 import { IUController } from './features/iu/index.js';
-import { initializeUFUTMModule } from './features/ufutm/index.js';
 
 class App {
     constructor() {
@@ -12,24 +11,18 @@ class App {
     }
 
     async init() {
-        console.log('🚀 Iniciando Calculadora IU...');
+        console.log('🚀 Iniciando aplicación...');
         
         try {
-            // Inicializar módulo UF/UTM primero
-            console.log('📊 Inicializando módulo UF/UTM...');
-            await initializeUFUTMModule();
-            
-            // Inicializar controlador IU
-            console.log('🧮 Inicializando controlador IU...');
+            // Solo inicializar IU por ahora
             this.iuController = new IUController();
             await this.iuController.init();
             
-            // Setup navegación por tabs
             this.setupTabNavigation();
             
-            console.log('✅ Aplicación iniciada correctamente');
+            console.log('✅ Aplicación lista');
         } catch (error) {
-            console.error('❌ Error al inicializar:', error);
+            console.error('❌ Error:', error);
         }
     }
 
@@ -58,11 +51,7 @@ class App {
     }
 }
 
-// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    const app = new App();
-    app.init();
+    window.app = new App();
+    window.app.init();
 });
-
-// Exportar para uso global si es necesario
-window.App = App;
