@@ -1,0 +1,94 @@
+{
+  "vigencia": "2025-09-01",
+  "periodo_label": "Septiembre 2025",
+  "utm": 69265,
+  "tramos": [
+    {
+      "numero": 1,
+      "desde": 0,
+      "hasta": 935077.50,
+      "factor": 0,
+      "rebaja": 0,
+      "tasaEfectivaMax": 0,
+      "label": "Exento",
+      "descripcion": "Hasta 13.5 UTM"
+    },
+    {
+      "numero": 2,
+      "desde": 935077.51,
+      "hasta": 2077950.00,
+      "factor": 0.04,
+      "rebaja": 37403.10,
+      "tasaEfectivaMax": 0.022,
+      "label": "Tramo 1",
+      "descripcion": "Desde 13.5 hasta 30 UTM"
+    },
+    {
+      "numero": 3,
+      "desde": 2077950.01,
+      "hasta": 3463250.00,
+      "factor": 0.08,
+      "rebaja": 120521.10,
+      "tasaEfectivaMax": 0.0452,
+      "label": "Tramo 2",
+      "descripcion": "Desde 30 hasta 50 UTM"
+    },
+    {
+      "numero": 4,
+      "desde": 3463250.01,
+      "hasta": 4848550.00,
+      "factor": 0.135,
+      "rebaja": 310999.85,
+      "tasaEfectivaMax": 0.0709,
+      "label": "Tramo 3",
+      "descripcion": "Desde 50 hasta 70 UTM"
+    },
+    {
+      "numero": 5,
+      "desde": 4848550.01,
+      "hasta": 6233850.00,
+      "factor": 0.23,
+      "rebaja": 771612.10,
+      "tasaEfectivaMax": 0.1062,
+      "label": "Tramo 4",
+      "descripcion": "Desde 70 hasta 90 UTM"
+    },
+    {
+      "numero": 6,
+      "desde": 6233850.01,
+      "hasta": 8311800.00,
+      "factor": 0.304,
+      "rebaja": 1232917.00,
+      "tasaEfectivaMax": 0.1557,
+      "label": "Tramo 5",
+      "descripcion": "Desde 90 hasta 120 UTM"
+    },
+    {
+      "numero": 7,
+      "desde": 8311800.01,
+      "hasta": 21472150.00,
+      "factor": 0.35,
+      "rebaja": 1615259.80,
+      "tasaEfectivaMax": 0.2748,
+      "label": "Tramo 6",
+      "descripcion": "Desde 120 hasta 310 UTM"
+    },
+    {
+      "numero": 8,
+      "desde": 21472150.01,
+      "hasta": null,
+      "factor": 0.4,
+      "rebaja": 2688867.30,
+      "tasaEfectivaMax": null,
+      "label": "Más de 27.48%",
+      "descripcion": "Más de 310 UTM"
+    }
+  ],
+  "metadata": {
+    "source": "SII - Servicio de Impuestos Internos",
+    "url": "https://www.sii.cl/valores_y_fechas/impuesto_unico/2025/impuesto_unico_2025.htm",
+    "version": "1.0.0",
+    "lastUpdate": "2025-09-03",
+    "description": "Tabla oficial de tramos de Impuesto Único para septiembre 2025"
+  }
+}
