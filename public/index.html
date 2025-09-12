@@ -112,6 +112,263 @@
             line-height: 1.6;
         }
 
+        /* Estilos para Calculadora IU */
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 1.1rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .renta-input {
+            width: 100%;
+            padding: 12px 12px 12px 30px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .renta-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-calcular {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-calcular:active {
+            transform: translateY(0);
+        }
+
+        .input-help {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .resultado-section {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .resultado-iu h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .resultado-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .resultado-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .resultado-item label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        .resultado-item .valor {
+            font-size: 1.1rem;
+            color: #212529;
+        }
+
+        .resultado-item .valor.impuesto {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #dc3545;
+        }
+
+        .formula-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .formula-info p {
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .tabla-controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-tabla {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-tabla:hover {
+            background: #5a6268;
+        }
+
+        .btn-tabla.active {
+            background: #28a745;
+        }
+
+        .tabla-section {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .tabla-sii h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .tabla-wrapper {
+            overflow-x: auto;
+        }
+
+        .tabla-tramos {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .tabla-tramos th,
+        .tabla-tramos td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tabla-tramos th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .tabla-tramos tr:hover {
+            background: #f8f9fa;
+        }
+
+        .tabla-tramos tr.tramo-aplicado {
+            background: #d4edda !important;
+            border-left: 4px solid #28a745;
+        }
+
+        .tramo-info {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .error-message h3 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+
+        .cargando {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .resultado-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                gap: 10px;
+            }
+            
+            .btn-calcular {
+                width: 100%;
+            }
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -159,9 +416,38 @@
 
         <div id="iu" class="tab-content active">
             <h2>Calculadora de Impuesto Único</h2>
-            <div class="placeholder">
-                <h3>🚧 En Desarrollo</h3>
-                <p>Aquí se implementará la calculadora de Impuesto Único con todas las tablas SII actualizadas.</p>
+            
+            <!-- Formulario de entrada -->
+            <div class="form-section">
+                <div class="input-group">
+                    <label for="renta-imponible">Renta Líquida Imponible (RLI):</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input 
+                            type="text" 
+                            id="renta-imponible" 
+                            placeholder="Ingrese el monto de renta"
+                            class="renta-input"
+                        >
+                    </div>
+                    <button id="btn-calcular" class="btn-calcular">Calcular Impuesto</button>
+                </div>
+                <p class="input-help">Ingrese el monto en pesos chilenos (ej: 2.500.000)</p>
+            </div>
+
+            <!-- Resultado del cálculo -->
+            <div id="resultado-iu" class="resultado-section" style="display: none;">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <!-- Botón para mostrar tabla -->
+            <div class="tabla-controls">
+                <button id="btn-mostrar-tabla" class="btn-tabla">Mostrar Tabla SII</button>
+            </div>
+
+            <!-- Tabla de tramos SII -->
+            <div id="tabla-sii-container" class="tabla-section" style="display: none;">
+                <!-- Se llena dinámicamente -->
             </div>
         </div>
 
@@ -190,6 +476,10 @@
         // Módulo principal de la aplicación
         console.log('Calculadora IU con Simulador APV - Cargando...');
 
+        // Importar módulos
+        import { initializeIUModule } from './src/features/iu/index.js';
+        import { initializeUFUTMModule } from './src/features/ufutm/index.js';
+
         // Funcionalidad de pestañas
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.tab');
@@ -212,6 +502,17 @@
                     }
                 });
             });
+
+            // Inicializar módulos
+            console.log('🚀 Inicializando módulos...');
+            
+            // Inicializar módulo UF/UTM
+            initializeUFUTMModule();
+            
+            // Inicializar módulo IU
+            initializeIUModule();
+            
+            console.log('✅ Aplicación cargada correctamente');
         });
     </script>
 </body>
