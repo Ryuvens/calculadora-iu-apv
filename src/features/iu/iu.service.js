@@ -44,23 +44,39 @@ export function computeImpuestoUnico(rli, tramos) {
     const impuesto = Math.max(0, (rli * tramoAplicado.factor) - tramoAplicado.rebaja);
     console.log('🧮 Cálculo:', rli, '×', tramoAplicado.factor, '-', tramoAplicado.rebaja, '=', impuesto);
     
-    // Calcular tasa efectiva
-    const tasaEfectiva = rli > 0 ? impuesto / rli : 0;
+    // Calcular tasa efectiva personal
+    const tasaEfectivaPersonal = rli > 0 ? (impuesto / rli) : 0;
+    
+    // Obtener tasa efectiva máxima del tramo (desde la tabla SII)
+    const tasaEfectivaMaxTramo = tramoAplicado.tasaEfectivaMax;
 
     const resultado = {
-        impuesto: Math.round(impuesto), // Redondear a entero
+        rli: rli,
+        impuesto: Math.round(impuesto),
         tramo: tramoAplicado,
+        numeroTramo: tramoAplicado.numero,
         factor: tramoAplicado.factor,
         rebaja: tramoAplicado.rebaja,
-        tasaEfectiva: tasaEfectiva,
-        rli: rli,
-        // Datos formateados para mostrar
+        // Tasa efectiva real del contribuyente
+        tasaEfectiva: tasaEfectivaPersonal,
+        tasaEfectivaPorcentaje: (tasaEfectivaPersonal * 100).toFixed(2) + '%',
+        // Tasa efectiva máxima del tramo (referencial de la tabla)
+        tasaEfectivaMaxTramo: tasaEfectivaMaxTramo,
+        // Tasa marginal (el factor aplicado)
+        tasaMarginal: tramoAplicado.factor,
+        tasaMarginalPorcentaje: (tramoAplicado.factor * 100).toFixed(1) + '%',
+        // Datos formateados para mostrar (mantener compatibilidad)
         impuestoFormateado: fmtCLP(Math.round(impuesto)),
         factorFormateado: fmtFactor(tramoAplicado.factor),
         rebajaFormateada: fmtCLP(tramoAplicado.rebaja),
-        tasaEfectivaFormateada: fmtPercentage(tasaEfectiva),
+        tasaEfectivaFormateada: fmtPercentage(tasaEfectivaPersonal),
         rliFormateada: fmtCLP(rli)
     };
+    
+    console.log('📊 Detalle de tasas:');
+    console.log(`  - Tasa Marginal (factor): ${resultado.tasaMarginalPorcentaje}`);
+    console.log(`  - Tasa Efectiva Personal: ${resultado.tasaEfectivaPorcentaje}`);
+    console.log(`  - Tasa Efectiva Máx del Tramo: ${tasaEfectivaMaxTramo}`);
     
     console.log('✅ Resultado calculado:', resultado);
     return resultado;

@@ -33,30 +33,38 @@ export class IUView {
                         <label>Renta Líquida Imponible:</label>
                         <span class="valor">${resultado.rliFormateada}</span>
                     </div>
-                    <div class="resultado-item">
-                        <label>Impuesto Único:</label>
+                    
+                    <div class="resultado-item destacado">
+                        <label>Impuesto a Pagar:</label>
                         <span class="valor impuesto">${resultado.impuestoFormateado}</span>
                     </div>
-                    <div class="resultado-item">
-                        <label>Tasa Efectiva:</label>
-                        <span class="valor">${resultado.tasaEfectivaFormateada}</span>
-                    </div>
+                    
                     <div class="resultado-item">
                         <label>Tramo Aplicado:</label>
-                        <span class="valor">${resultado.tramo.label || `Tramo ${resultado.tramo.numero}`}</span>
+                        <span class="valor">Tramo ${resultado.numeroTramo}</span>
                     </div>
+                    
                     <div class="resultado-item">
-                        <label>Factor:</label>
-                        <span class="valor">${resultado.factorFormateado}</span>
+                        <label>Tasa Marginal (Factor):</label>
+                        <span class="valor">${resultado.tasaMarginalPorcentaje}</span>
+                        <small class="info">Tasa aplicada al monto que excede el tramo anterior</small>
                     </div>
+                    
+                    <div class="resultado-item">
+                        <label>Tasa Efectiva Personal:</label>
+                        <span class="valor destacado">${resultado.tasaEfectivaPorcentaje}</span>
+                        <small class="info">Porcentaje real de impuesto sobre su renta total</small>
+                    </div>
+                    
                     <div class="resultado-item">
                         <label>Cantidad a Rebajar:</label>
                         <span class="valor">${resultado.rebajaFormateada}</span>
                     </div>
                 </div>
-                <div class="formula-info">
-                    <p><strong>Fórmula aplicada:</strong> Impuesto = max(0, RLI × ${resultado.factorFormateado} - ${resultado.rebajaFormateada})</p>
-                    <p><strong>Cálculo:</strong> max(0, ${resultado.rliFormateada} × ${resultado.factorFormateado} - ${resultado.rebajaFormateada}) = ${resultado.impuestoFormateado}</p>
+                
+                <div class="formula-explicacion">
+                    <p><strong>Fórmula aplicada:</strong></p>
+                    <code>${resultado.rliFormateada} × ${resultado.factorFormateado} - ${resultado.rebajaFormateada} = ${resultado.impuestoFormateado}</code>
                 </div>
             </div>
         `;
