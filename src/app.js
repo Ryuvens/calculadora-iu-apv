@@ -14,9 +14,14 @@ class App {
         console.log('🚀 Iniciando aplicación...');
         
         try {
-            // Solo inicializar IU por ahora
+            // Inicializar IU
             this.iuController = new IUController();
             await this.iuController.init();
+            
+            // Inicializar Panel de Administración
+            if (window.adminController) {
+                window.adminController.init();
+            }
             
             this.setupTabNavigation();
             
