@@ -4,10 +4,12 @@
  */
 
 import { IUController } from './features/iu/index.js';
+import { AdminController } from './features/admin/index.js';
 
 class App {
     constructor() {
         this.iuController = null;
+        this.adminController = null;
     }
 
     async init() {
@@ -18,11 +20,11 @@ class App {
             this.iuController = new IUController();
             await this.iuController.init();
             
-            // Inicializar Panel de Administración
-            if (window.adminController) {
-                window.adminController.init();
-            }
+            // Inicializar Panel Admin
+            this.adminController = new AdminController();
+            this.adminController.init();
             
+            // Setup navegación
             this.setupTabNavigation();
             
             console.log('✅ Aplicación lista');
@@ -39,24 +41,21 @@ class App {
             button.addEventListener('click', () => {
                 const targetTab = button.dataset.tab;
                 
-                // Remover clase active de todas las pestañas y contenidos
                 tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                
-                // Agregar clase active a la pestaña clickeada
                 button.classList.add('active');
                 
-                // Mostrar el contenido correspondiente
-                const targetContent = document.getElementById(targetTab);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                }
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === targetTab) {
+                        content.classList.add('active');
+                    }
+                });
             });
         });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new App();
-    window.app.init();
+    const app = new App();
+    app.init();
 });

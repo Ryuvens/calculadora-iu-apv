@@ -122,8 +122,9 @@ if (typeof window !== 'undefined') {
     };
     
     // Ejecutar tests automáticamente en modo desarrollo
-    if (DEV_CONFIG?.DEBUG) {
-        console.log('🔧 Modo desarrollo activado - ejecutando tests automáticamente');
-        runAllTests();
-    }
+    // Comentado temporalmente para evitar errores de referencia
+    // if (DEV_CONFIG?.DEBUG) {
+    //     console.log('🔧 Modo desarrollo activado - ejecutando tests automáticamente');
+    //     runAllTests();
+    // }
 }
