@@ -118,7 +118,7 @@ export class IUView {
                                 
                                 return `
                                     <tr class="${isAplicado ? 'tramo-aplicado' : ''}">
-                                        <td>${tramo.periodo || 'MENSUAL'}</td>
+                                        <td>${tramo.numero === 1 ? 'Exento' : `Tramo ${tramo.numero}`}</td>
                                         <td>${desdeFormateado}</td>
                                         <td>${hastaFormateado}</td>
                                         <td>${factorFormateado}</td>
