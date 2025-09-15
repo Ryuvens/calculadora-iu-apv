@@ -41,15 +41,22 @@ class App {
             button.addEventListener('click', () => {
                 const targetTab = button.dataset.tab;
                 
+                // Remover active de todos los botones
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 
+                // Ocultar todo el contenido
                 tabContents.forEach(content => {
                     content.classList.remove('active');
-                    if (content.id === targetTab) {
-                        content.classList.add('active');
-                    }
+                    content.classList.add('hidden');
                 });
+                
+                // Mostrar el contenido seleccionado
+                const targetContent = document.getElementById(`tab-${targetTab}`);
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                    targetContent.classList.add('active');
+                }
             });
         });
     }

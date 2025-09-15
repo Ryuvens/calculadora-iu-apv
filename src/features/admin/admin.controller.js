@@ -11,6 +11,13 @@ export class AdminController {
 
     init() {
         console.log('🔧 Inicializando Panel de Administración...');
+        
+        // Debug: verificar visibilidad
+        const adminTab = document.getElementById('tab-admin');
+        console.log('Tab admin element:', adminTab);
+        console.log('Tab admin classes:', adminTab?.className);
+        console.log('Tab admin hidden?:', adminTab?.classList.contains('hidden'));
+        
         console.log('Verificando elementos DOM:');
         console.log('- btn-cargar-periodo:', document.getElementById('btn-cargar-periodo'));
         console.log('- btn-nuevo-periodo:', document.getElementById('btn-nuevo-periodo'));
