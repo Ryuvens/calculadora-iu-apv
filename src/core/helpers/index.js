@@ -37,6 +37,9 @@ export {
     DEV_CONFIG
 } from '../config/constants.js';
 
+// Exportar funciones de input-mask
+export * from './input-mask.js';
+
 /**
  * Función utilitaria para inicializar todos los helpers
  * Útil para configurar el entorno y ejecutar tests

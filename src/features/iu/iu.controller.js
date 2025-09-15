@@ -8,6 +8,7 @@ import { IUView } from './iu.view.js';
 import { ERRORS } from '../../core/config/constants.js';
 import { isValidRenta } from '../../core/helpers/validators.js';
 import { parseCLP } from '../../core/helpers/formatters.js';
+import { applyThousandsSeparator, getCleanNumber } from '../../core/helpers/input-mask.js';
 
 /**
  * Controlador principal de la Calculadora IU
@@ -92,6 +93,11 @@ export class IUController {
         const inputRenta = document.getElementById('renta-imponible');
         if (inputRenta) {
             console.log('✅ Input renta encontrado');
+            
+            // Aplicar máscara de miles
+            applyThousandsSeparator(inputRenta);
+            
+            // Listener para Enter
             inputRenta.addEventListener('keydown', (event) => {
                 if (event.code === 'Enter' || event.keyCode === 13) {
                     event.preventDefault();
@@ -188,8 +194,8 @@ export class IUController {
             throw new Error('Debe ingresar un monto de renta');
         }
 
-        // Usar parseCLP para manejar formatos con $ y puntos
-        const rli = parseCLP(valor);
+        // Usar getCleanNumber para obtener el valor numérico
+        const rli = getCleanNumber(valor);
         console.log('💱 RLI parseada:', rli);
         
         if (rli <= 0) {
