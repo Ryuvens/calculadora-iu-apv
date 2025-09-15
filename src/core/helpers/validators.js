@@ -178,34 +178,31 @@ export function isValidEmail(email) {
  * isValidRUT("12345678-0") // false (dígito verificador incorrecto)
  */
 export function isValidRUT(rut) {
-    if (!isValidString(rut)) {
-        return false;
-    }
+    if (!rut || typeof rut !== 'string') return false;
     
     // Limpiar RUT
-    const cleanRut = rut.replace(/[^0-9kK]/g, '');
+    const cleanRUT = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
     
-    if (cleanRut.length < 8 || cleanRut.length > 9) {
-        return false;
-    }
+    if (cleanRUT.length < 2) return false;
     
-    // Separar número y dígito verificador
-    const rutNumber = cleanRut.slice(0, -1);
-    const dv = cleanRut.slice(-1).toUpperCase();
+    const rutNumber = cleanRUT.slice(0, -1);
+    const dv = cleanRUT.slice(-1);
+    
+    if (!/^\d+$/.test(rutNumber)) return false;
     
     // Calcular dígito verificador
-    let sum = 0;
-    let multiplier = 2;
+    let suma = 0;
+    let multiplicador = 2;
     
     for (let i = rutNumber.length - 1; i >= 0; i--) {
-        sum += parseInt(rutNumber[i]) * multiplier;
-        multiplier = multiplier === 7 ? 2 : multiplier + 1;
+        suma += parseInt(rutNumber[i]) * multiplicador;
+        multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
     }
     
-    const remainder = sum % 11;
-    const calculatedDV = remainder === 0 ? '0' : remainder === 1 ? 'K' : (11 - remainder).toString();
+    const resto = suma % 11;
+    const dvCalculado = resto === 0 ? '0' : resto === 1 ? 'K' : String(11 - resto);
     
-    return dv === calculatedDV;
+    return dv === dvCalculado;
 }
 
 // Tests básicos
@@ -247,8 +244,9 @@ if (typeof window !== 'undefined') {
     console.assert(isValidEmail("invalid-email") === false, 'isValidEmail("invalid-email") should return false');
     
     // Test isValidRUT
-    console.assert(isValidRUT("12345678-9") === true, 'isValidRUT("12345678-9") should return true');
-    console.assert(isValidRUT("12.345.678-9") === true, 'isValidRUT("12.345.678-9") should return true');
+    console.assert(isValidRUT("11.111.111-1") === true, 'isValidRUT("11.111.111-1") should return true');
+    console.assert(isValidRUT("12.345.678-5") === true, 'isValidRUT("12.345.678-5") should return true');
+    console.assert(isValidRUT("76.086.428-5") === true, 'isValidRUT("76.086.428-5") should return true');
     console.assert(isValidRUT("12345678-0") === false, 'isValidRUT("12345678-0") should return false');
     
     console.log('✅ Todos los tests de validators pasaron correctamente');

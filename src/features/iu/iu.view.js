@@ -95,23 +95,35 @@ export class IUView {
                                 <th>Hasta</th>
                                 <th>Factor</th>
                                 <th>Cantidad a rebajar</th>
+                                <th>Tasa de Impuesto Efectiva, máxima por cada tramo de Renta</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${tramos.map((tramo, index) => {
                                 const isAplicado = index === indiceAplicado;
                                 const desdeFormateado = fmtCLP(tramo.desde);
-                                const hastaFormateado = tramo.hasta === null ? 'En adelante' : fmtCLP(tramo.hasta);
+                                const hastaFormateado = tramo.hasta === 999999999 ? 'Y MÁS' : fmtCLP(tramo.hasta);
                                 const factorFormateado = fmtFactor(tramo.factor);
                                 const rebajaFormateada = fmtCLP(tramo.rebaja);
                                 
+                                // Formatear tasa efectiva máxima
+                                let tasaEfectivaFormateada;
+                                if (tramo.tasaEfectivaMax === 'Exento') {
+                                    tasaEfectivaFormateada = 'Exento';
+                                } else if (tramo.tasaEfectivaMax === 'MÁS DE 27.48%') {
+                                    tasaEfectivaFormateada = 'MÁS DE 27.48%';
+                                } else {
+                                    tasaEfectivaFormateada = fmtPercentage(tramo.tasaEfectivaMax);
+                                }
+                                
                                 return `
                                     <tr class="${isAplicado ? 'tramo-aplicado' : ''}">
-                                        <td>${tramo.label || `Tramo ${tramo.numero || index + 1}`}</td>
+                                        <td>${tramo.periodo || 'MENSUAL'}</td>
                                         <td>${desdeFormateado}</td>
                                         <td>${hastaFormateado}</td>
                                         <td>${factorFormateado}</td>
                                         <td>${rebajaFormateada}</td>
+                                        <td>${tasaEfectivaFormateada}</td>
                                     </tr>
                                 `;
                             }).join('')}
