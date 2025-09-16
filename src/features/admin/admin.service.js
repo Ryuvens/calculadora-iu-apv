@@ -84,8 +84,16 @@ export class AdminService {
             }
             
             // Validar factor
-            if (isNaN(tramo.factor) || tramo.factor < 0 || tramo.factor > 1) {
-                errores.push(`Tramo ${num}: El factor debe estar entre 0 y 1`);
+            if (i === 1) {
+                // Tramo exento debe tener factor 0
+                if (tramo.factor !== 0) {
+                    errores.push(`Tramo 1 (Exento): El factor debe ser 0`);
+                }
+            } else {
+                // Otros tramos deben tener factor > 0
+                if (isNaN(tramo.factor) || tramo.factor <= 0 || tramo.factor > 1) {
+                    errores.push(`Tramo ${num}: El factor debe estar entre 0 y 1`);
+                }
             }
             
             // Validar que los factores sean crecientes

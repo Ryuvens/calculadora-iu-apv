@@ -193,14 +193,20 @@ export class AdminController {
             
             // Hasta
             const hastaInput = document.getElementById(`hasta-${i}`);
-            if (hastaInput) {
-                hastaInput.value = tramo.hasta === null || tramo.hasta === 999999999 ? 'Y MÁS' : fmtCLP(tramo.hasta);
+            if (hastaInput && !hastaInput.readOnly) {
+                const hastaValue = (tramo.hasta === null || tramo.hasta === 999999999) ? 'Y MÁS' : fmtCLP(tramo.hasta);
+                hastaInput.value = hastaValue;
             }
             
-            // Factor
+            // Factor - IMPORTANTE: mostrar con 4 decimales
             const factorInput = document.getElementById(`factor-${i}`);
             if (factorInput) {
-                factorInput.value = tramo.factor;
+                if (i === 1) {
+                    factorInput.value = '0.0000';
+                } else {
+                    // Mostrar con 4 decimales
+                    factorInput.value = tramo.factor.toFixed(4);
+                }
             }
             
             // Rebaja
@@ -216,8 +222,9 @@ export class AdminController {
                     tasaInput.value = 'Exento';
                 } else if (i === 8) {
                     tasaInput.value = tramo.tasaEfectivaMax || 'MÁS DE 27.48%';
-                } else {
-                    tasaInput.value = tramo.tasaEfectivaMax ? (tramo.tasaEfectivaMax * 100).toFixed(2) : '';
+                } else if (tramo.tasaEfectivaMax !== null && tramo.tasaEfectivaMax !== undefined) {
+                    // Mostrar como porcentaje
+                    tasaInput.value = (tramo.tasaEfectivaMax * 100).toFixed(2) + '%';
                 }
             }
         });
@@ -245,21 +252,42 @@ export class AdminController {
         const tramos = [];
         
         for (let i = 1; i <= 8; i++) {
-            const desde = i === 1 ? 0 : parseCLP(document.getElementById(`desde-${i}`).value);
-            const hastaValue = document.getElementById(`hasta-${i}`).value;
-            const hasta = hastaValue === 'Y MÁS' || i === 8 ? 999999999 : parseCLP(hastaValue);
-            const factor = parseFloat(document.getElementById(`factor-${i}`).value) || 0;
-            const rebaja = parseCLP(document.getElementById(`rebaja-${i}`).value) || 0;
-            const tasaValue = document.getElementById(`tasa-${i}`).value;
+            const desdeInput = document.getElementById(`desde-${i}`);
+            const hastaInput = document.getElementById(`hasta-${i}`);
+            const factorInput = document.getElementById(`factor-${i}`);
+            const rebajaInput = document.getElementById(`rebaja-${i}`);
+            const tasaInput = document.getElementById(`tasa-${i}`);
+            
+            // Obtener valores con validación
+            const desde = i === 1 ? 0 : parseCLP(desdeInput.value);
+            
+            const hastaValue = hastaInput.value;
+            const hasta = (hastaValue === 'Y MÁS' || i === 8) ? 999999999 : parseCLP(hastaValue);
+            
+            // IMPORTANTE: Los factores son decimales, NO usar parseCLP
+            let factor = 0;
+            if (factorInput.value) {
+                // Reemplazar coma por punto si es necesario
+                const factorStr = factorInput.value.replace(',', '.');
+                factor = parseFloat(factorStr) || 0;
+            }
+            
+            const rebaja = parseCLP(rebajaInput.value) || 0;
             
             let tasaEfectivaMax = null;
             if (i === 1) {
                 tasaEfectivaMax = 0;
             } else if (i === 8) {
                 tasaEfectivaMax = null;
-            } else if (tasaValue && tasaValue !== '') {
-                tasaEfectivaMax = parseFloat(tasaValue) / 100;
+            } else if (tasaInput.value && tasaInput.value !== '' && tasaInput.value !== 'Exento') {
+                // Manejar tanto porcentaje como decimal
+                const tasaStr = tasaInput.value.replace(',', '.').replace('%', '');
+                const tasaNum = parseFloat(tasaStr);
+                // Si es mayor a 1, asumimos que es porcentaje
+                tasaEfectivaMax = tasaNum > 1 ? tasaNum / 100 : tasaNum;
             }
+            
+            console.log(`Tramo ${i}: Factor original="${factorInput.value}", parseado=${factor}`);
             
             tramos.push({
                 numero: i,
