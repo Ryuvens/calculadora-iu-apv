@@ -24,6 +24,11 @@ class App {
             this.adminController = new AdminController();
             this.adminController.init();
             
+            // Inicializar módulo UF/UTM
+            const { UFUTMController } = await import('./features/ufutm/ufutm.controller.js');
+            this.ufutmController = new UFUTMController();
+            await this.ufutmController.init();
+            
             // Setup navegación
             this.setupTabNavigation();
             
