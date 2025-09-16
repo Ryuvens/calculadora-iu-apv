@@ -46,31 +46,70 @@ export class IUController {
      */
     async loadTramos() {
         try {
-            console.log('📊 Cargando tramos...');
-            // Cargar directamente desde el archivo
-            const response = await fetch('/data/tramos/sii-2025-09.json');
-            const data = await response.json();
-            this.tramosActuales = data.tramos;
-            console.log('✅ Tramos cargados:', this.tramosActuales.length, 'tramos');
+            const { mes, anio } = this.periodoActual || { mes: 9, anio: 2025 };
+            const mesStr = mes.toString().padStart(2, '0');
             
-            // Renderizar tabla inicial sin resaltar
-            this.view.renderTablaTramos(this.tramosActuales, -1);
+            console.log(`📊 Cargando tramos para ${mesStr}/${anio}`);
+            
+            // PRIMERO: Intentar cargar desde localStorage
+            const localStorageKey = `calc_iu_tramos_${anio}_${mesStr}`;
+            const localData = localStorage.getItem(localStorageKey);
+            
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                this.tramosActuales = parsed.tramos;
+                console.log(`✅ Tramos cargados desde localStorage: ${this.tramosActuales.length} tramos`);
+                this.mostrarEstadoPeriodo(`Datos cargados: ${this.getNombreMes(mes)} ${anio} (guardados localmente)`);
+            } else {
+                // SEGUNDO: Intentar cargar desde archivo JSON
+                const response = await fetch(`/data/tramos/sii-${anio}-${mesStr}.json`);
+                
+                if (!response.ok) {
+                    throw new Error(`No hay datos para ${mesStr}/${anio}`);
+                }
+                
+                const data = await response.json();
+                this.tramosActuales = data.tramos;
+                console.log(`✅ Tramos cargados desde archivo: ${this.tramosActuales.length} tramos`);
+                this.mostrarEstadoPeriodo(`Datos cargados: ${this.getNombreMes(mes)} ${anio}`);
+            }
+            
+            // Renderizar tabla si está visible
+            if (document.querySelector('#tabla-sii-container:not(.hidden)')) {
+                this.view.renderTablaTramos(this.tramosActuales, -1);
+            }
+            
         } catch (error) {
             console.error('❌ Error cargando tramos:', error);
-            // Fallback: usar datos hardcodeados si falla
-            this.tramosActuales = [
-                {"numero": 1, "desde": 0, "hasta": 935077.50, "factor": 0, "rebaja": 0},
-                {"numero": 2, "desde": 935077.51, "hasta": 2077950.00, "factor": 0.04, "rebaja": 37403.10},
-                {"numero": 3, "desde": 2077950.01, "hasta": 3463250.00, "factor": 0.08, "rebaja": 120521.10},
-                {"numero": 4, "desde": 3463250.01, "hasta": 4848550.00, "factor": 0.135, "rebaja": 310999.85},
-                {"numero": 5, "desde": 4848550.01, "hasta": 6233850.00, "factor": 0.23, "rebaja": 771612.10},
-                {"numero": 6, "desde": 6233850.01, "hasta": 8311800.00, "factor": 0.304, "rebaja": 1232917.00},
-                {"numero": 7, "desde": 8311800.01, "hasta": 21472150.00, "factor": 0.35, "rebaja": 1615259.80},
-                {"numero": 8, "desde": 21472150.01, "hasta": null, "factor": 0.4, "rebaja": 2688867.30}
-            ];
-            console.log('✅ Usando tramos de fallback:', this.tramosActuales.length, 'tramos');
-            this.view.renderTablaTramos(this.tramosActuales, -1);
+            this.mostrarEstadoPeriodo(`⚠️ Sin datos para ${this.getNombreMes(this.periodoActual?.mes || 9)} ${this.periodoActual?.anio || 2025}. Usando valores de referencia.`);
+            await this.loadTramosRespaldo();
         }
+    }
+
+    async loadTramosRespaldo() {
+        this.tramosActuales = [
+            {"numero": 1, "desde": 0, "hasta": 935077.50, "factor": 0, "rebaja": 0},
+            {"numero": 2, "desde": 935077.51, "hasta": 2077950.00, "factor": 0.04, "rebaja": 37403.10},
+            {"numero": 3, "desde": 2077950.01, "hasta": 3463250.00, "factor": 0.08, "rebaja": 120521.10},
+            {"numero": 4, "desde": 3463250.01, "hasta": 4848550.00, "factor": 0.135, "rebaja": 310999.85},
+            {"numero": 5, "desde": 4848550.01, "hasta": 6233850.00, "factor": 0.23, "rebaja": 771612.10},
+            {"numero": 6, "desde": 6233850.01, "hasta": 8311800.00, "factor": 0.304, "rebaja": 1232917.00},
+            {"numero": 7, "desde": 8311800.01, "hasta": 21472150.00, "factor": 0.35, "rebaja": 1615259.80},
+            {"numero": 8, "desde": 21472150.01, "hasta": 999999999, "factor": 0.4, "rebaja": 2688867.30}
+        ];
+        console.log('✅ Usando tramos de fallback:', this.tramosActuales.length, 'tramos');
+        this.view.renderTablaTramos(this.tramosActuales, -1);
+    }
+
+    mostrarEstadoPeriodo(mensaje) {
+        // Mostrar estado del período en algún lugar de la UI
+        console.log('📅 Estado período:', mensaje);
+    }
+
+    getNombreMes(numeroMes) {
+        const meses = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        return meses[numeroMes] || '';
     }
 
     /**
@@ -117,6 +156,15 @@ export class IUController {
         } else {
             console.error('❌ Botón tabla no encontrado');
         }
+
+        // Escuchar cuando se actualizan los tramos desde el panel admin
+        window.addEventListener('tramosActualizados', async (e) => {
+            const { mes, anio } = e.detail;
+            if (mes === this.periodoActual?.mes && anio === this.periodoActual?.anio) {
+                console.log('📊 Recargando tramos actualizados...');
+                await this.loadTramos();
+            }
+        });
     }
 
     /**

@@ -83,6 +83,9 @@ export class AdminController {
 
         // Auto-formateo de inputs monetarios
         this.setupFormateoInputs();
+        
+        // Auto-completar campos "desde"
+        this.setupAutoCompletarDesde();
     }
 
     setupFormateoInputs() {
@@ -98,6 +101,29 @@ export class AdminController {
                 }
             });
         });
+    }
+
+    setupAutoCompletarDesde() {
+        // Cuando se modifica un campo "hasta", actualizar el "desde" del siguiente tramo
+        for (let i = 1; i <= 7; i++) { // Solo hasta el tramo 7
+            const hastaInput = document.getElementById(`hasta-${i}`);
+            if (hastaInput) {
+                hastaInput.addEventListener('blur', (e) => {
+                    const valor = parseCLP(e.target.value);
+                    if (!isNaN(valor) && valor > 0) {
+                        // Formatear el campo actual
+                        e.target.value = fmtCLP(valor);
+                        
+                        // Auto-completar el "desde" del siguiente tramo
+                        const siguienteDesde = document.getElementById(`desde-${i + 1}`);
+                        if (siguienteDesde && !siguienteDesde.readOnly) {
+                            // Agregar 0.01 centavo para continuidad
+                            siguienteDesde.value = fmtCLP(valor + 0.01);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     obtenerPeriodoSeleccionado() {

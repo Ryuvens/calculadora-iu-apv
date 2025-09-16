@@ -26,7 +26,8 @@ export function initAdminForm() {
                     <input type="text" 
                            id="hasta-${i}" 
                            class="admin-input hasta" 
-                           placeholder="${isLast ? 'Y MÁS' : 'Hasta'}">
+                           placeholder="${isLast ? 'Y MÁS' : 'Hasta'}"
+                           ${isLast ? 'readonly value="Y MÁS"' : ''}>
                 </td>
                 <td>
                     <input type="text" 

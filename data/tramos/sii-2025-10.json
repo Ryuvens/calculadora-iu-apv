@@ -1,0 +1,16 @@
+{
+  "vigencia": "2025-10-01",
+  "periodo_label": "Octubre 2025",
+  "moneda": "CLP",
+  "columnas": ["Períodos", "Desde", "Hasta", "Factor", "Cantidad a rebajar", "Tasa Efectiva Máx"],
+  "tramos": [
+    {"numero": 1, "periodo": "MENSUAL", "desde": 0, "hasta": 935077.50, "factor": 0, "rebaja": 0, "tasaEfectivaMax": "Exento", "label": "Exento"},
+    {"numero": 2, "periodo": "MENSUAL", "desde": 935077.51, "hasta": 2077950.00, "factor": 0.04, "rebaja": 37403.10, "tasaEfectivaMax": 0.0220},
+    {"numero": 3, "periodo": "MENSUAL", "desde": 2077950.01, "hasta": 3463250.00, "factor": 0.08, "rebaja": 120521.10, "tasaEfectivaMax": 0.0452},
+    {"numero": 4, "periodo": "MENSUAL", "desde": 3463250.01, "hasta": 4848550.00, "factor": 0.135, "rebaja": 310999.85, "tasaEfectivaMax": 0.0709},
+    {"numero": 5, "periodo": "MENSUAL", "desde": 4848550.01, "hasta": 6233850.00, "factor": 0.23, "rebaja": 771612.10, "tasaEfectivaMax": 0.1062},
+    {"numero": 6, "periodo": "MENSUAL", "desde": 6233850.01, "hasta": 8311800.00, "factor": 0.304, "rebaja": 1232917.00, "tasaEfectivaMax": 0.1557},
+    {"numero": 7, "periodo": "MENSUAL", "desde": 8311800.01, "hasta": 21472150.00, "factor": 0.35, "rebaja": 1615259.80, "tasaEfectivaMax": 0.2748},
+    {"numero": 8, "periodo": "MENSUAL", "desde": 21472150.01, "hasta": 999999999, "factor": 0.4, "rebaja": 2688867.30, "tasaEfectivaMax": "MÁS DE 27.48%", "label": "Y MÁS"}
+  ]
+}
