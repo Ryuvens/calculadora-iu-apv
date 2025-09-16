@@ -27,6 +27,23 @@ export class IUController {
         console.log('🧮 Inicializando IUController...');
         
         try {
+            // Establecer período inicial desde los selectores
+            const mesCalculo = document.getElementById('mes-calculo');
+            const anioCalculo = document.getElementById('anio-calculo');
+            
+            if (mesCalculo && anioCalculo) {
+                this.periodoActual = {
+                    mes: parseInt(mesCalculo.value),
+                    anio: parseInt(anioCalculo.value)
+                };
+            } else {
+                // Valor por defecto
+                this.periodoActual = {
+                    mes: 9,  // Septiembre
+                    anio: 2025
+                };
+            }
+            
             // Cargar tramos
             await this.loadTramos();
             
@@ -102,7 +119,20 @@ export class IUController {
     }
 
     mostrarEstadoPeriodo(mensaje) {
-        // Mostrar estado del período en algún lugar de la UI
+        const statusEl = document.getElementById('estado-periodo');
+        if (statusEl) {
+            statusEl.textContent = mensaje;
+            statusEl.style.display = 'block';
+            
+            // Determinar el tipo de mensaje para aplicar estilos
+            if (mensaje.includes('guardados localmente')) {
+                statusEl.className = 'periodo-status success';
+            } else if (mensaje.includes('Sin datos')) {
+                statusEl.className = 'periodo-status warning';
+            } else {
+                statusEl.className = 'periodo-status info';
+            }
+        }
         console.log('📅 Estado período:', mensaje);
     }
 
@@ -110,6 +140,36 @@ export class IUController {
         const meses = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
                       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         return meses[numeroMes] || '';
+    }
+
+    async onPeriodoChange() {
+        console.log('📅 Período de cálculo cambiado');
+        
+        // Actualizar período actual
+        const mesCalculo = document.getElementById('mes-calculo');
+        const anioCalculo = document.getElementById('anio-calculo');
+        
+        if (mesCalculo && anioCalculo) {
+            this.periodoActual = {
+                mes: parseInt(mesCalculo.value),
+                anio: parseInt(anioCalculo.value)
+            };
+        }
+        
+        // Recargar tramos del nuevo período
+        await this.loadTramos();
+        
+        // Limpiar resultado anterior
+        const resultadoContainer = document.getElementById('resultado-iu');
+        if (resultadoContainer) {
+            resultadoContainer.classList.add('hidden');
+        }
+        
+        // Si la tabla está visible, actualizarla
+        const tablaContainer = document.getElementById('tabla-sii-container');
+        if (tablaContainer && !tablaContainer.classList.contains('hidden')) {
+            this.view.renderTablaTramos(this.tramosActuales, -1);
+        }
     }
 
     /**
@@ -165,6 +225,18 @@ export class IUController {
                 await this.loadTramos();
             }
         });
+
+        // Listeners para cambio de período
+        const mesCalculo = document.getElementById('mes-calculo');
+        const anioCalculo = document.getElementById('anio-calculo');
+
+        if (mesCalculo) {
+            mesCalculo.addEventListener('change', () => this.onPeriodoChange());
+        }
+
+        if (anioCalculo) {
+            anioCalculo.addEventListener('change', () => this.onPeriodoChange());
+        }
     }
 
     /**

@@ -606,6 +606,49 @@
             margin-top: 15px;
         }
 
+        /* Selector de período en calculadora */
+        .periodo-selector {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .periodo-selector label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .periodo-status {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .periodo-status.info {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #90caf9;
+        }
+
+        .periodo-status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .periodo-status.warning {
+            background: #fff3e0;
+            color: #f57c00;
+            border: 1px solid #ffcc02;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -663,6 +706,33 @@
 
         <div id="iu" class="tab-content active">
             <h2>Calculadora de Impuesto Único</h2>
+            
+            <!-- Selector de período -->
+            <div class="input-group periodo-selector">
+                <label>Período de cálculo:</label>
+                <div class="periodo-controls">
+                    <select id="mes-calculo" class="periodo-input">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9" selected>Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    
+                    <select id="anio-calculo" class="periodo-input">
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+                <div id="estado-periodo" class="periodo-status"></div>
+            </div>
             
             <!-- Formulario de entrada -->
             <div class="form-section">
