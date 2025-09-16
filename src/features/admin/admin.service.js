@@ -84,23 +84,23 @@ export class AdminService {
             }
             
             // Validar factor
-            if (i === 1) {
-                // Tramo exento debe tener factor 0
+            if (i === 0) { // Tramo 1 (índice 0)
+                // Tramo exento DEBE tener factor 0
                 if (tramo.factor !== 0) {
                     errores.push(`Tramo 1 (Exento): El factor debe ser 0`);
                 }
             } else {
-                // Otros tramos deben tener factor > 0
+                // Otros tramos deben tener factor > 0 y <= 1
                 if (isNaN(tramo.factor) || tramo.factor <= 0 || tramo.factor > 1) {
-                    errores.push(`Tramo ${num}: El factor debe estar entre 0 y 1`);
+                    errores.push(`Tramo ${num}: El factor debe ser mayor que 0 y menor o igual a 1`);
                 }
-            }
-            
-            // Validar que los factores sean crecientes
-            if (i > 0) {
-                const factorAnterior = tramos[i - 1].factor;
-                if (tramo.factor < factorAnterior) {
-                    errores.push(`Tramo ${num}: El factor debe ser mayor o igual al del tramo anterior`);
+                
+                // Validar que los factores sean crecientes
+                if (i > 1) {
+                    const factorAnterior = tramos[i - 1].factor;
+                    if (tramo.factor < factorAnterior) {
+                        errores.push(`Tramo ${num}: El factor debe ser mayor o igual al del tramo anterior`);
+                    }
                 }
             }
             

@@ -34,7 +34,7 @@ export function initAdminForm() {
                            id="factor-${i}" 
                            class="admin-input factor" 
                            placeholder="${isExento ? '0.0000' : 'Factor'}"
-                           ${isExento ? 'value="0.0000"' : ''}>
+                           ${isExento ? 'readonly value="0"' : ''}>
                 </td>
                 <td>
                     <input type="text" 

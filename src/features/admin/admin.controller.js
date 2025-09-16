@@ -202,7 +202,8 @@ export class AdminController {
             const factorInput = document.getElementById(`factor-${i}`);
             if (factorInput) {
                 if (i === 1) {
-                    factorInput.value = '0.0000';
+                    // Tramo exento siempre factor 0
+                    factorInput.value = '0';
                 } else {
                     // Mostrar con 4 decimales
                     factorInput.value = tramo.factor.toFixed(4);
@@ -266,7 +267,10 @@ export class AdminController {
             
             // IMPORTANTE: Los factores son decimales, NO usar parseCLP
             let factor = 0;
-            if (factorInput.value) {
+            if (i === 1) {
+                // Tramo exento siempre tiene factor 0
+                factor = 0;
+            } else if (factorInput.value) {
                 // Reemplazar coma por punto si es necesario
                 const factorStr = factorInput.value.replace(',', '.');
                 factor = parseFloat(factorStr) || 0;
