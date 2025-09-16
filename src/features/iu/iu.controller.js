@@ -165,10 +165,19 @@ export class IUController {
             resultadoContainer.classList.add('hidden');
         }
         
-        // Si la tabla está visible, actualizarla
+        // IMPORTANTE: Forzar actualización de la tabla con los nuevos tramos
         const tablaContainer = document.getElementById('tabla-sii-container');
-        if (tablaContainer && !tablaContainer.classList.contains('hidden')) {
-            this.view.renderTablaTramos(this.tramosActuales, -1);
+        if (tablaContainer) {
+            // Importar la función si no está disponible
+            const { renderTablaTramos } = await import('./iu.view.js');
+            
+            // Limpiar y re-renderizar la tabla con los tramos actuales
+            renderTablaTramos(this.tramosActuales, -1);
+            
+            // Si la tabla estaba visible, mantenerla visible
+            if (!tablaContainer.classList.contains('hidden')) {
+                console.log('📊 Actualizando tabla visible con tramos del período', this.periodoActual);
+            }
         }
     }
 
@@ -328,9 +337,20 @@ export class IUController {
     /**
      * Alterna la visibilidad de la tabla
      */
-    toggleTabla() {
+    async toggleTabla() {
         console.log('🔄 Alternando tabla...');
-        this.view.toggleTabla();
+        
+        // Importar la función si es necesario
+        const { toggleTabla, renderTablaTramos } = await import('./iu.view.js');
+        
+        // Antes de mostrar, asegurar que tenga los tramos correctos del período actual
+        const tablaContainer = document.getElementById('tabla-sii-container');
+        if (tablaContainer && tablaContainer.classList.contains('hidden')) {
+            // Si va a mostrar la tabla, actualizarla con los tramos actuales
+            renderTablaTramos(this.tramosActuales, -1);
+        }
+        
+        toggleTabla();
     }
 
     /**

@@ -91,9 +91,22 @@ export class IUView {
             return;
         }
 
+        // Obtener período desde los selectores
+        const mesCalculo = document.getElementById('mes-calculo');
+        const anioCalculo = document.getElementById('anio-calculo');
+        let periodoLabel = 'Período Actual';
+        
+        if (mesCalculo && anioCalculo) {
+            const meses = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const mes = parseInt(mesCalculo.value);
+            const anio = parseInt(anioCalculo.value);
+            periodoLabel = `${meses[mes]} ${anio}`;
+        }
+
         const html = `
             <div class="tabla-sii">
-                <h3>Tabla de Tramos SII - Septiembre 2025</h3>
+                <h3>Tabla de Tramos SII - ${periodoLabel}</h3>
                 <div class="tabla-wrapper">
                     <table class="tabla-tramos">
                         <thead>

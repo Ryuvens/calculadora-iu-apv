@@ -43,12 +43,13 @@ export function initAdminForm() {
                            placeholder="${isExento ? '0' : 'Rebaja'}"
                            ${isExento ? 'value="0"' : ''}>
                 </td>
-                <td>
-                    <input type="text" 
-                           id="tasa-${i}" 
-                           class="admin-input tasa" 
-                           placeholder="${isExento ? 'Exento' : isLast ? 'MÁS DE X%' : 'Tasa %'}">
-                </td>
+            <td>
+                <input type="text" 
+                       id="tasa-${i}" 
+                       class="admin-input tasa" 
+                       placeholder="${isExento ? 'Exento' : isLast ? 'MÁS DE 27.48%' : 'Tasa %'}"
+                       ${isExento ? 'value="Exento" readonly' : isLast ? 'value="MÁS DE 27.48%" readonly' : ''}>
+            </td>
             </tr>
         `;
     }
