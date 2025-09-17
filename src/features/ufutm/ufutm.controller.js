@@ -86,13 +86,18 @@ export class UFUTMController {
 
     async cargarDatos() {
         console.log('📊 Cargando datos UF/UTM para:', this.periodoActual);
+        console.log('Verificando elementos DOM:');
+        console.log('- uf-hoy:', document.getElementById('uf-hoy'));
+        console.log('- utm-mes:', document.getElementById('utm-mes'));
+        console.log('- tbody-uf-7dias:', document.getElementById('tbody-uf-7dias'));
         
         try {
-            // Intentar cargar desde localStorage primero
             const datos = await this.service.cargarDatosPeriodo(
                 this.periodoActual.anio, 
                 this.periodoActual.mes
             );
+            
+            console.log('Datos cargados:', datos);
             
             if (datos) {
                 this.datosActuales = datos;
