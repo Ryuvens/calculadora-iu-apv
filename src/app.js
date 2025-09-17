@@ -32,6 +32,17 @@ class App {
             // Setup navegación
             this.setupTabNavigation();
             
+            // Diagnóstico temporal
+            console.log('🔍 Verificando pestañas disponibles:');
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                console.log(`- ID: ${tab.id}, Classes: ${tab.className}`);
+            });
+
+            console.log('🔍 Verificando botones de pestañas:');
+            document.querySelectorAll('.tab').forEach(btn => {
+                console.log(`- data-tab: ${btn.dataset.tab}, Texto: ${btn.textContent}`);
+            });
+            
             console.log('✅ Aplicación lista');
         } catch (error) {
             console.error('❌ Error:', error);
