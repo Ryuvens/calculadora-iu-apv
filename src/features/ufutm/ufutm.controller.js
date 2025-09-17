@@ -113,23 +113,32 @@ export class UFUTMController {
     }
 
     actualizarVista(datos) {
+        console.log('📝 Actualizando vista con datos:', datos);
+        
         // Actualizar UF de hoy
         const hoy = new Date();
         const fechaHoy = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
         
         let ufHoy = null;
+        let fechaUF = fechaHoy;
+        
         if (datos.uf && datos.uf[fechaHoy]) {
             ufHoy = datos.uf[fechaHoy];
         } else if (datos.uf) {
             // Buscar el último valor disponible
             const fechasOrdenadas = Object.keys(datos.uf).sort().reverse();
+            console.log('Fechas disponibles:', fechasOrdenadas);
             if (fechasOrdenadas.length > 0) {
-                ufHoy = datos.uf[fechasOrdenadas[0]];
+                fechaUF = fechasOrdenadas[0];
+                ufHoy = datos.uf[fechaUF];
             }
         }
-
+        
+        console.log('UF a mostrar:', ufHoy, 'para fecha:', fechaUF);
+        console.log('UTM a mostrar:', datos.utm);
+        
         // Actualizar vista
-        this.view.actualizarUFHoy(ufHoy, fechaHoy);
+        this.view.actualizarUFHoy(ufHoy, fechaUF);
         this.view.actualizarUTMMes(datos.utm, this.periodoActual);
         
         // Cargar tabla de últimos 7 días

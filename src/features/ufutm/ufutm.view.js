@@ -7,11 +7,17 @@ export class UFUTMView {
     }
 
     actualizarUFHoy(valor, fecha) {
+        console.log('🔄 Actualizando UF Hoy:', valor, fecha);
         const container = document.getElementById('uf-hoy');
-        if (!container) return;
+        if (!container) {
+            console.error('No se encontró contenedor uf-hoy');
+            return;
+        }
 
         const valorEl = container.querySelector('.valor-numero');
         const fechaEl = container.querySelector('.valor-fecha');
+        
+        console.log('Elementos encontrados:', valorEl, fechaEl);
 
         if (valor) {
             valorEl.textContent = fmtCLP(valor);
@@ -23,11 +29,17 @@ export class UFUTMView {
     }
 
     actualizarUTMMes(valor, periodo) {
+        console.log('🔄 Actualizando UTM:', valor, periodo);
         const container = document.getElementById('utm-mes');
-        if (!container) return;
+        if (!container) {
+            console.error('No se encontró contenedor utm-mes');
+            return;
+        }
 
         const valorEl = container.querySelector('.valor-numero');
         const periodoEl = container.querySelector('.valor-periodo');
+        
+        console.log('Elementos encontrados:', valorEl, periodoEl);
 
         if (valor) {
             valorEl.textContent = fmtCLP(valor);
