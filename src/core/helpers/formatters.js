@@ -116,16 +116,14 @@ export function fmtNumber(number) {
  * fmtUF(2500.5, false) // "$2.500,50"
  * fmtUF(100) // "100,00 UF"
  */
-export function fmtUF(number, withSuffix = true) {
-    if (number === null || number === undefined || isNaN(number)) {
-        return withSuffix ? '0,00 UF' : '$0,00';
-    }
+export function fmtUF(value, withSuffix = true) {
+    if (!value && value !== 0) return '--';
     
-    const num = Number(number);
-    const formatted = new Intl.NumberFormat('es-CL', {
+    // Asegurar que siempre muestre 2 decimales
+    const formatted = value.toLocaleString('es-CL', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-    }).format(num);
+    });
     
     return withSuffix ? `${formatted} UF` : `$${formatted}`;
 }

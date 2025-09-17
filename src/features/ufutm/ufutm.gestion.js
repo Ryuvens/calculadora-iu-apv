@@ -110,7 +110,7 @@ export class UFUTMGestion {
                 inputUTM.value = `$${datos.utm.toLocaleString('es-CL')}`;
             }
 
-            // Cargar UF
+            // Cargar UF con decimales
             const textareaUF = document.getElementById('textarea-uf');
             if (textareaUF && datos.uf) {
                 let texto = '';
@@ -118,7 +118,9 @@ export class UFUTMGestion {
                     const valor = datos.uf[fecha];
                     // Convertir fecha de YYYY-MM-DD a DD/MM/YYYY
                     const [year, month, day] = fecha.split('-');
-                    texto += `${day}/${month}/${year} ${valor}\n`;
+                    // Formatear valor con 2 decimales usando coma
+                    const valorFormateado = valor.toFixed(2).replace('.', ',');
+                    texto += `${day}/${month}/${year} ${valorFormateado}\n`;
                 });
                 textareaUF.value = texto.trim();
             }
@@ -205,10 +207,14 @@ export class UFUTMGestion {
         
         lineas.forEach(linea => {
             // Formatos aceptados: 
-            // DD/MM/YYYY valor
+            // DD/MM/YYYY valor (con punto o coma decimal)
             // DD-MM-YYYY valor
             // YYYY-MM-DD valor
-            const match = linea.match(/(\d{1,4})[\/\-](\d{1,2})[\/\-](\d{2,4})\s+(\d+\.?\d*)/);
+            
+            // Primero reemplazar coma por punto para decimales
+            const lineaNormalizada = linea.replace(',', '.');
+            
+            const match = lineaNormalizada.match(/(\d{1,4})[\/\-](\d{1,2})[\/\-](\d{2,4})\s+(\d+\.?\d*)/);
             
             if (match) {
                 let dia, mes, anio;
@@ -230,7 +236,9 @@ export class UFUTMGestion {
                 const valor = parseFloat(match[4]);
                 
                 if (!isNaN(valor)) {
-                    ufData[fecha] = valor;
+                    // Mantener los decimales
+                    ufData[fecha] = Math.round(valor * 100) / 100; // Redondear a 2 decimales
+                    console.log(`Parseado: ${fecha} = ${ufData[fecha]}`);
                 }
             }
         });
