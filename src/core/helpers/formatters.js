@@ -109,21 +109,25 @@ export function fmtNumber(number) {
 /**
  * Formatea un número como UF con 2 decimales
  * @param {number} number - Número a formatear
+ * @param {boolean} withSuffix - Si incluir el sufijo "UF" (default: true)
  * @returns {string} Número formateado como UF
  * @example
  * fmtUF(2500.5) // "2.500,50 UF"
+ * fmtUF(2500.5, false) // "$2.500,50"
  * fmtUF(100) // "100,00 UF"
  */
-export function fmtUF(number) {
+export function fmtUF(number, withSuffix = true) {
     if (number === null || number === undefined || isNaN(number)) {
-        return '0,00 UF';
+        return withSuffix ? '0,00 UF' : '$0,00';
     }
     
     const num = Number(number);
-    return new Intl.NumberFormat('es-CL', {
+    const formatted = new Intl.NumberFormat('es-CL', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-    }).format(num) + ' UF';
+    }).format(num);
+    
+    return withSuffix ? `${formatted} UF` : `$${formatted}`;
 }
 
 // Tests básicos

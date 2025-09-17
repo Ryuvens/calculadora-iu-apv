@@ -1,4 +1,4 @@
-import { fmtCLP } from '../../core/helpers/index.js';
+import { fmtCLP, fmtUF } from '../../core/helpers/index.js';
 
 export class UFUTMView {
     constructor() {
@@ -20,7 +20,7 @@ export class UFUTMView {
         console.log('Elementos encontrados:', valorEl, fechaEl);
 
         if (valor) {
-            valorEl.textContent = fmtCLP(valor);
+            valorEl.textContent = fmtUF(valor, false); // Sin sufijo UF, con $
             fechaEl.textContent = this.formatearFecha(fecha);
         } else {
             valorEl.textContent = 'Sin datos';
@@ -74,7 +74,7 @@ export class UFUTMView {
             html += `
                 <tr>
                     <td>${this.formatearFecha(fecha)}</td>
-                    <td>${fmtCLP(valor)}</td>
+                    <td>${fmtUF(valor, false)}</td>
                     <td class="${valor > valorAnterior ? 'positivo' : valor < valorAnterior ? 'negativo' : ''}">${variacion}</td>
                 </tr>
             `;
