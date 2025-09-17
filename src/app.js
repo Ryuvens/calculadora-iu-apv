@@ -57,21 +57,27 @@ class App {
             button.addEventListener('click', () => {
                 const targetTab = button.dataset.tab;
                 
-                // Remover active de todos los botones
+                // Remover active de todos
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 
-                // Ocultar todo el contenido
+                // Ocultar todos
                 tabContents.forEach(content => {
                     content.classList.remove('active');
-                    content.classList.add('hidden');
                 });
                 
-                // Mostrar el contenido seleccionado
-                const targetContent = document.getElementById(`tab-${targetTab}`);
+                // Mostrar el seleccionado - MANEJAR AMBOS CASOS
+                let targetContent = document.getElementById(targetTab);
+                if (!targetContent) {
+                    // Si no existe, probar con prefijo "tab-"
+                    targetContent = document.getElementById(`tab-${targetTab}`);
+                }
+                
                 if (targetContent) {
-                    targetContent.classList.remove('hidden');
                     targetContent.classList.add('active');
+                    console.log(`✅ Activando pestaña: ${targetContent.id}`);
+                } else {
+                    console.error(`❌ No se encontró pestaña: ${targetTab}`);
                 }
             });
         });
