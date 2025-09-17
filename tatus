@@ -1,0 +1,3 @@
+[33m0b778ab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;33mtag: [m[1;33mv1.1.0[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/feature/uf-utm-module[m[33m, [m[1;32mfeature/uf-utm-module[m[33m)[m fix: corregir apertura automática y cierre de panel gestión UF/UTM
+[33m360fcba[m feat: implementar panel gestión UF/UTM (Sub-fase B)
+[33m1b87052[m feat: agregar formateo UF con decimales

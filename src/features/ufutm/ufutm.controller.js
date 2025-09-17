@@ -1,6 +1,7 @@
 import { UFUTMService } from './ufutm.service.js';
 import { UFUTMView } from './ufutm.view.js';
 import { UFUTMGestion } from './ufutm.gestion.js';
+import { UFUTMConversor } from './ufutm.conversor.js';
 import { fmtCLP } from '../../core/helpers/index.js';
 
 export class UFUTMController {
@@ -8,6 +9,7 @@ export class UFUTMController {
         this.service = new UFUTMService();
         this.view = new UFUTMView();
         this.gestion = new UFUTMGestion();
+        this.conversor = new UFUTMConversor();
         this.periodoActual = {
             mes: 10,  // Octubre por defecto
             anio: 2025
@@ -20,6 +22,7 @@ export class UFUTMController {
         
         this.setupEventListeners();
         this.gestion.init();
+        this.conversor.init();
         await this.cargarPeriodoActual();
         
         // Listener para actualizaciones desde el panel de gestión
@@ -163,9 +166,6 @@ export class UFUTMController {
     }
 
     toggleConversor() {
-        const conversor = document.getElementById('ufutm-conversor');
-        if (conversor) {
-            conversor.classList.toggle('hidden');
-        }
+        this.conversor.abrir();
     }
 }
