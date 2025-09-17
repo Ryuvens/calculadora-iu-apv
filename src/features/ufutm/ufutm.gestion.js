@@ -13,17 +13,35 @@ export class UFUTMGestion {
     }
 
     setupEventListeners() {
-        // Abrir/cerrar panel
+        // Abrir panel - SOLO con el botón correcto
         const btnGestionar = document.getElementById('btn-gestionar-ufutm');
-        const btnCerrar = document.getElementById('btn-cerrar-gestion');
-        const panel = document.getElementById('ufutm-gestion-panel');
-
         if (btnGestionar) {
-            btnGestionar.addEventListener('click', () => this.abrirPanel());
+            btnGestionar.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.abrirPanel();
+            });
         }
 
+        // Cerrar panel - asegurar que funcione
+        const btnCerrar = document.getElementById('btn-cerrar-gestion');
         if (btnCerrar) {
-            btnCerrar.addEventListener('click', () => this.cerrarPanel());
+            btnCerrar.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.cerrarPanel();
+            });
+        }
+        
+        // Cerrar al hacer click fuera del panel
+        const panel = document.getElementById('ufutm-gestion-panel');
+        if (panel) {
+            // Click en el overlay (fuera del contenido)
+            panel.addEventListener('click', (e) => {
+                if (e.target === panel) {
+                    this.cerrarPanel();
+                }
+            });
         }
 
         // Cargar datos
@@ -66,10 +84,14 @@ export class UFUTMGestion {
     }
 
     cerrarPanel() {
+        console.log('🔒 Cerrando panel de gestión');
         const panel = document.getElementById('ufutm-gestion-panel');
         if (panel) {
             panel.classList.add('hidden');
             this.isOpen = false;
+            console.log('Panel cerrado, clases:', panel.className);
+        } else {
+            console.error('No se encontró el panel');
         }
     }
 
@@ -162,6 +184,11 @@ export class UFUTMGestion {
         
         if (guardado) {
             this.mostrarMensaje(`✅ Período ${mes}/${anio} guardado exitosamente`, 'success');
+            
+            // Cerrar panel después de 2 segundos
+            setTimeout(() => {
+                this.cerrarPanel();
+            }, 2000);
             
             // Notificar para actualizar la vista principal
             window.dispatchEvent(new CustomEvent('ufutmActualizado', { 
