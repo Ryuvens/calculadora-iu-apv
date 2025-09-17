@@ -717,6 +717,112 @@
             margin-top: 20px;
         }
 
+        /* Panel de Gestión UF/UTM */
+        .gestion-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .gestion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .gestion-periodo {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .utm-input-group, .uf-input-group {
+            margin-bottom: 20px;
+        }
+
+        .utm-input-group label, .uf-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .money-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .uf-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 5px 0;
+        }
+
+        .gestion-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .mensajes {
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .mensajes.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .mensajes.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .mensajes.info {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #90caf9;
+        }
+
         /* Selector de período en calculadora */
         .periodo-selector {
             background: #f8f9fa;
@@ -960,10 +1066,62 @@
                 <button id="btn-conversor" class="btn-secondary">Abrir Conversor</button>
             </div>
 
-            <!-- Panel de gestión (oculto inicialmente) -->
-            <div id="ufutm-gestion-panel" class="gestion-panel hidden">
-                <!-- Se llenará en la siguiente fase -->
+        <!-- Panel de gestión (oculto inicialmente) -->
+        <div id="ufutm-gestion-panel" class="gestion-panel hidden">
+            <div class="gestion-header">
+                <h3>Gestión de Datos UF/UTM</h3>
+                <button id="btn-cerrar-gestion" class="btn-close">✕</button>
             </div>
+
+            <div class="gestion-content">
+                <!-- Selector de período para gestionar -->
+                <div class="gestion-periodo">
+                    <select id="gestion-ufutm-mes" class="periodo-input">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10" selected>Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <select id="gestion-ufutm-anio" class="periodo-input">
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                    <button id="btn-cargar-datos-ufutm" class="btn-secondary">Cargar Datos</button>
+                </div>
+
+                <!-- UTM del mes -->
+                <div class="utm-input-group">
+                    <label>UTM del Mes:</label>
+                    <input type="text" id="input-utm" class="money-input" placeholder="$0">
+                </div>
+
+                <!-- UF diaria -->
+                <div class="uf-input-group">
+                    <label>Valores UF del Mes:</label>
+                    <p class="hint">Pegue los valores desde Excel (formato: fecha valor) o ingrese manualmente</p>
+                    <textarea id="textarea-uf" rows="10" class="uf-textarea" placeholder="01/10/2025 39500.00
+02/10/2025 39505.50
+..."></textarea>
+                </div>
+
+                <!-- Acciones -->
+                <div class="gestion-actions">
+                    <button id="btn-validar-ufutm" class="btn-secondary">Validar Datos</button>
+                    <button id="btn-guardar-ufutm" class="btn-primary">Guardar Período</button>
+                </div>
+
+                <!-- Mensajes -->
+                <div id="gestion-mensajes" class="mensajes"></div>
+            </div>
+        </div>
 
             <!-- Conversor (oculto inicialmente) -->
             <div id="ufutm-conversor" class="conversor-panel hidden">

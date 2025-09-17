@@ -1,11 +1,13 @@
 import { UFUTMService } from './ufutm.service.js';
 import { UFUTMView } from './ufutm.view.js';
+import { UFUTMGestion } from './ufutm.gestion.js';
 import { fmtCLP } from '../../core/helpers/index.js';
 
 export class UFUTMController {
     constructor() {
         this.service = new UFUTMService();
         this.view = new UFUTMView();
+        this.gestion = new UFUTMGestion();
         this.periodoActual = {
             mes: 10,  // Octubre por defecto
             anio: 2025
@@ -17,7 +19,16 @@ export class UFUTMController {
         console.log('💱 Inicializando módulo UF/UTM...');
         
         this.setupEventListeners();
+        this.gestion.init();
         await this.cargarPeriodoActual();
+        
+        // Listener para actualizaciones desde el panel de gestión
+        window.addEventListener('ufutmActualizado', async (e) => {
+            const { mes, anio } = e.detail;
+            if (mes === this.periodoActual.mes && anio === this.periodoActual.anio) {
+                await this.cargarDatos();
+            }
+        });
         
         console.log('✅ Módulo UF/UTM inicializado');
     }
@@ -148,10 +159,7 @@ export class UFUTMController {
     }
 
     toggleGestionPanel() {
-        const panel = document.getElementById('ufutm-gestion-panel');
-        if (panel) {
-            panel.classList.toggle('hidden');
-        }
+        this.gestion.abrirPanel();
     }
 
     toggleConversor() {
