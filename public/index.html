@@ -953,6 +953,281 @@
             }
         }
 
+        /* Módulo APV */
+        .apv-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .apv-subtitle {
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .apv-entrada {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .entrada-grupo {
+            margin-bottom: 20px;
+        }
+
+        .entrada-grupo label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .help-text {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .opciones-regimen {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            margin-right: 10px;
+        }
+
+        /* Cards de régimen */
+        .regimenes-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .regime-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .regime-card.recommended {
+            border: 2px solid var(--success-color);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+        }
+
+        .regime-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .regime-letter {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: #d32f2f;
+        }
+
+        .regime-card.recommended .regime-letter {
+            background: #1976d2;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            right: 0;
+            top: -10px;
+            background: var(--success-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .regime-annual {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        /* Proyecciones */
+        .proyeccion-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .proj-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .proj-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .proyeccion-periodo {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .periodo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f5f5f5;
+            cursor: pointer;
+        }
+
+        .periodo-content {
+            padding: 20px;
+        }
+
+        .periodo-valores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .valor-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .valor-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .valor-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Modal de parámetros */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .parametro-grupo {
+            margin-bottom: 25px;
+        }
+
+        .parametro-grupo h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+
+        .parametros-link {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .parametros-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .parametros-link a:hover {
+            text-decoration: underline;
+        }
+
+        .tabla-comparacion {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .tabla-comparacion th {
+            background: #f5f5f5;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .tabla-comparacion td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
         /* Selector de período en calculadora */
         .periodo-selector {
             background: #f8f9fa;
@@ -1115,13 +1390,212 @@
             </div>
         </div>
 
-        <div id="apv" class="tab-content">
-            <h2>Simulador de Ahorro Previsional Voluntario</h2>
-            <div class="placeholder">
-                <h3>🚧 En Desarrollo</h3>
-                <p>Aquí se implementará el simulador de APV con proyecciones y análisis de rentabilidad.</p>
+        <!-- Tab Simulador APV -->
+        <section id="apv" class="tab-content">
+            <div class="apv-header">
+                <h2>Simulador APV</h2>
+                <p class="apv-subtitle">Analiza el beneficio tributario de tu ahorro previsional</p>
             </div>
-        </div>
+
+            <!-- Entrada de datos -->
+            <div class="apv-entrada">
+                <div class="entrada-grupo">
+                    <label for="renta-liquida">Remuneración mensual líquida*</label>
+                    <input type="text" id="renta-liquida" class="money-input" placeholder="$0">
+                    <span class="help-text">Sueldo después de descuentos previsionales</span>
+                </div>
+                
+                <div class="entrada-grupo">
+                    <label for="monto-apv">Monto de ahorro en APV*</label>
+                    <input type="text" id="monto-apv" class="money-input" placeholder="$0">
+                    <span class="help-text">Monto mensual que deseas aportar</span>
+                </div>
+                
+                <div class="opciones-regimen">
+                    <label class="radio-option">
+                        <input type="radio" name="regimen-apv" value="comparar" checked>
+                        <span>Comparar ambos regímenes</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="regimen-apv" value="a">
+                        <span>Solo Régimen A (Bonificación 15%)</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="regimen-apv" value="b">
+                        <span>Solo Régimen B (Rebaja impuestos)</span>
+                    </label>
+                </div>
+                
+                <button id="btn-calcular-apv" class="btn-primary">Calcular</button>
+            </div>
+
+            <!-- Recomendación (oculto inicialmente) -->
+            <div id="apv-recomendacion" class="apv-recomendacion hidden">
+                <h3>Según tus ingresos y ahorro, te recomendamos</h3>
+                <div class="regimenes-cards">
+                    <div class="regime-card" id="card-regime-a">
+                        <div class="regime-header">
+                            <span class="regime-letter">A</span>
+                            <span class="regime-name">Régimen A</span>
+                        </div>
+                        <div class="regime-content">
+                            <p class="regime-description">
+                                Este régimen te otorga una Bonificación fiscal por tu ahorro de <strong class="bonif-amount">$0</strong> mensuales y al año un monto de:
+                            </p>
+                            <p class="regime-annual">$0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="regime-card recommended" id="card-regime-b">
+                        <div class="regime-header">
+                            <span class="regime-letter">B</span>
+                            <span class="regime-name">Régimen B</span>
+                            <div class="recommended-badge">✓ Recomendado</div>
+                        </div>
+                        <div class="regime-content">
+                            <p class="regime-description">
+                                De acuerdo a tu renta mensual y el monto de ahorro ingresado, el régimen más adecuado para tus depósitos es el <strong>Régimen B</strong>.
+                            </p>
+                            <p class="regime-benefit">
+                                Este régimen te permitirá ahorrar <strong class="savings-amount">$0</strong> en impuestos mensuales y al año un monto de:
+                            </p>
+                            <p class="regime-annual">$0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proyección en el tiempo -->
+            <div id="apv-proyeccion" class="apv-proyeccion hidden">
+                <h3>Proyección de ahorro en el tiempo</h3>
+                
+                <div class="proyeccion-tabs">
+                    <button class="proj-tab active" data-regime="a">Régimen Tributario A</button>
+                    <button class="proj-tab" data-regime="b">Régimen Tributario B</button>
+                    <button class="proj-tab" data-regime="comparacion">Comparación</button>
+                </div>
+                
+                <div id="proyeccion-content">
+                    <!-- Proyecciones anuales -->
+                    <div class="proyeccion-periodo" data-periodo="anual">
+                        <div class="periodo-header">
+                            <span class="periodo-title">Anual</span>
+                            <button class="periodo-toggle">▼</button>
+                        </div>
+                        <div class="periodo-content">
+                            <div class="periodo-valores">
+                                <div class="valor-item">
+                                    <span class="valor-label">Rentabilidad:</span>
+                                    <span class="valor-amount">$0</span>
+                                </div>
+                                <div class="valor-item">
+                                    <span class="valor-label">Capital ahorrado:</span>
+                                    <span class="valor-amount">$0</span>
+                                </div>
+                                <div class="valor-item">
+                                    <span class="valor-label">Monto de la rebaja de impuestos:</span>
+                                    <span class="valor-amount">$0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proyeccion-periodo collapsed" data-periodo="5">
+                        <div class="periodo-header">
+                            <span class="periodo-title">A los 5 años</span>
+                            <button class="periodo-toggle">▶</button>
+                        </div>
+                        <div class="periodo-content hidden"></div>
+                    </div>
+
+                    <div class="proyeccion-periodo collapsed" data-periodo="10">
+                        <div class="periodo-header">
+                            <span class="periodo-title">A los 10 años</span>
+                            <button class="periodo-toggle">▶</button>
+                        </div>
+                        <div class="periodo-content hidden"></div>
+                    </div>
+
+                    <div class="proyeccion-periodo collapsed" data-periodo="15">
+                        <div class="periodo-header">
+                            <span class="periodo-title">A los 15 años</span>
+                            <button class="periodo-toggle">▶</button>
+                        </div>
+                        <div class="periodo-content hidden"></div>
+                    </div>
+
+                    <div class="proyeccion-periodo collapsed" data-periodo="20">
+                        <div class="periodo-header">
+                            <span class="periodo-title">A los 20 años</span>
+                            <button class="periodo-toggle">▶</button>
+                        </div>
+                        <div class="periodo-content hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparación Con y Sin APV -->
+            <div id="apv-comparacion-tabla" class="apv-comparacion-tabla hidden">
+                <h3>Comparación con y sin APV</h3>
+                <table class="tabla-comparacion">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sin APV</th>
+                            <th>Con APV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-comparacion">
+                        <!-- Se llenará dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Link de parámetros -->
+            <div class="parametros-link">
+                <a href="#" id="ver-parametros">¿Qué parámetros se utilizaron en este cálculo?</a>
+            </div>
+
+            <!-- Modal de parámetros (oculto) -->
+            <div id="modal-parametros" class="modal-overlay hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Parámetros utilizados en el cálculo</h3>
+                        <button class="modal-close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="parametro-grupo">
+                            <h4>Valores utilizados:</h4>
+                            <ul>
+                                <li>Valor UF: <span id="param-uf">$0</span></li>
+                                <li>Valor UTM: <span id="param-utm">$0</span></li>
+                                <li>Rentabilidad anual estimada: <span id="param-rentabilidad">4.255%</span></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="parametro-grupo">
+                            <h4>Topes legales aplicados:</h4>
+                            <ul>
+                                <li><strong>Régimen A:</strong> Bonificación máxima de 6 UTM anuales (15% del aporte)</li>
+                                <li><strong>Régimen B:</strong> Rebaja máxima de 50 UF mensuales (600 UF anuales)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="parametro-grupo">
+                            <h4>Fórmulas utilizadas:</h4>
+                            <div class="formula-box">
+                                <strong>Régimen A:</strong><br>
+                                Bonificación = MIN(Aporte anual × 0.15, 6 × UTM)
+                            </div>
+                            <div class="formula-box">
+                                <strong>Régimen B:</strong><br>
+                                Ahorro = Impuesto(Renta) - Impuesto(Renta - MIN(APV, 50 UF))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <div id="ufutm" class="tab-content">
             <div class="ufutm-header">
