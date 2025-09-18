@@ -188,7 +188,15 @@ export class APVController {
     }
 
     actualizarProyecciones() {
-        const periodos = [1, 5, 10, 15, 20];
+        // Cambiar los períodos para incluir correctamente el anual
+        const periodos = [
+            { años: 1, atributo: 'anual' },
+            { años: 5, atributo: '5' },
+            { años: 10, atributo: '10' },
+            { años: 15, atributo: '15' },
+            { años: 20, atributo: '20' }
+        ];
+        
         const regimenes = [];
         
         if (this.resultadosActuales.regimenA) {
@@ -199,16 +207,22 @@ export class APVController {
         }
         
         regimenes.forEach(({ tipo, datos }) => {
-            periodos.forEach(años => {
+            periodos.forEach(({ años, atributo }) => {
                 const proyeccion = this.service.calcularProyecciones(datos, años);
-                this.view.actualizarProyeccion(tipo, años, proyeccion);
+                this.view.actualizarProyeccion(tipo, atributo, proyeccion);
             });
         });
     }
 
     actualizarTablaComparativa() {
+        // Evitar recálculo si no hay resultados
+        if (!this.resultadosActuales) return;
+        
         const rentaLiquida = parseCLP(document.getElementById('renta-liquida').value);
         const montoAPV = parseCLP(document.getElementById('monto-apv').value);
+        
+        // Validar antes de generar tabla
+        if (!rentaLiquida || !montoAPV) return;
         
         // Generar datos para la tabla
         let datosTabla;

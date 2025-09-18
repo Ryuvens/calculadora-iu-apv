@@ -140,12 +140,18 @@ export class APVView {
     }
 
     actualizarProyeccion(regimen, periodo, datos) {
-        // Buscar el contenedor del período
+        // Buscar el contenedor del período usando el atributo correcto
         const periodoElement = document.querySelector(`.proyeccion-periodo[data-periodo="${periodo}"]`);
-        if (!periodoElement) return;
+        if (!periodoElement) {
+            console.warn(`No se encontró elemento para período: ${periodo}`);
+            return;
+        }
 
         const content = periodoElement.querySelector('.periodo-content');
         if (!content) return;
+
+        // Determinar el label correcto para el beneficio según el régimen
+        const labelBeneficio = regimen === 'A' ? 'Bonificación fiscal acumulada:' : 'Ahorro tributario acumulado:';
 
         // Crear HTML para los valores
         const html = `
@@ -159,7 +165,7 @@ export class APVView {
                     <span class="valor-amount">${fmtCLP(datos.capitalAhorrado)}</span>
                 </div>
                 <div class="valor-item">
-                    <span class="valor-label">Monto de la rebaja de impuestos:</span>
+                    <span class="valor-label">${labelBeneficio}</span>
                     <span class="valor-amount">${fmtCLP(datos.beneficioAcumulado)}</span>
                 </div>
             </div>
@@ -224,6 +230,10 @@ export class APVView {
                     <h5>Régimen A</h5>
                     <div class="periodo-valores">
                         <div class="valor-item">
+                            <span class="valor-label">Rentabilidad:</span>
+                            <span class="valor-amount">${fmtCLP(datosA.rentabilidadGenerada)}</span>
+                        </div>
+                        <div class="valor-item">
                             <span class="valor-label">Capital ahorrado:</span>
                             <span class="valor-amount">${fmtCLP(datosA.capitalAhorrado)}</span>
                         </div>
@@ -236,6 +246,10 @@ export class APVView {
                 <div class="comparacion-columna">
                     <h5>Régimen B</h5>
                     <div class="periodo-valores">
+                        <div class="valor-item">
+                            <span class="valor-label">Rentabilidad:</span>
+                            <span class="valor-amount">${fmtCLP(datosB.rentabilidadGenerada)}</span>
+                        </div>
                         <div class="valor-item">
                             <span class="valor-label">Capital ahorrado:</span>
                             <span class="valor-amount">${fmtCLP(datosB.capitalAhorrado)}</span>
