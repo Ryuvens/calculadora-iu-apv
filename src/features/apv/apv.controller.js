@@ -258,20 +258,28 @@ export class APVController {
         const content = periodoElement.querySelector('.periodo-content');
         const toggle = periodoElement.querySelector('.periodo-toggle');
         
-        if (!content || !toggle) return;
+        if (!content || !toggle) {
+            console.error('No se encontró content o toggle');
+            return;
+        }
         
-        const isCollapsed = content.classList.contains('hidden');
+        // Verificar estado actual
+        const isHidden = content.style.display === 'none' || content.classList.contains('hidden');
         
-        if (isCollapsed) {
+        if (isHidden) {
             // Expandir
+            content.style.display = 'block';
             content.classList.remove('hidden');
             toggle.textContent = '▼';
             periodoElement.classList.remove('collapsed');
+            console.log('Expandiendo período');
         } else {
             // Colapsar
+            content.style.display = 'none';
             content.classList.add('hidden');
             toggle.textContent = '▶';
             periodoElement.classList.add('collapsed');
+            console.log('Colapsando período');
         }
     }
 

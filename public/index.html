@@ -1107,6 +1107,7 @@
             background: #f5f5f5;
             cursor: pointer;
             user-select: none;
+            position: relative;
         }
 
         .periodo-header:hover {
@@ -1114,11 +1115,25 @@
         }
 
         .periodo-toggle {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--primary-color);
             pointer-events: none; /* Evita conflictos, el click lo maneja el header */
         }
 
-        .periodo-content {
+        .proyeccion-periodo .periodo-content {
             padding: 20px;
+            display: block;
+        }
+
+        .proyeccion-periodo .periodo-content.hidden {
+            display: none !important;
+        }
+
+        .proyeccion-periodo.collapsed .periodo-content {
+            display: none !important;
         }
 
         .periodo-valores {
