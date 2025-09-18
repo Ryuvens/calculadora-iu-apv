@@ -29,6 +29,11 @@ class App {
             this.ufutmController = new UFUTMController();
             await this.ufutmController.init();
             
+            // Inicializar módulo APV
+            const { APVController } = await import('./features/apv/apv.controller.js');
+            this.apvController = new APVController();
+            await this.apvController.init();
+            
             // Setup navegación
             this.setupTabNavigation();
             
