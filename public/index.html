@@ -1106,6 +1106,15 @@
             padding: 15px 20px;
             background: #f5f5f5;
             cursor: pointer;
+            user-select: none;
+        }
+
+        .periodo-header:hover {
+            background: #e8e8e8;
+        }
+
+        .periodo-toggle {
+            pointer-events: none; /* Evita conflictos, el click lo maneja el header */
         }
 
         .periodo-content {

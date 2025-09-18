@@ -51,14 +51,20 @@ export class APVController {
             });
         });
 
-        // Toggles de períodos
-        const togglesPeriodo = document.querySelectorAll('.periodo-toggle');
-        togglesPeriodo.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                const periodo = e.target.closest('.proyeccion-periodo');
-                this.togglePeriodo(periodo);
+        // Toggles de períodos con delegación de eventos
+        const proyeccionContent = document.getElementById('proyeccion-content');
+        if (proyeccionContent) {
+            proyeccionContent.addEventListener('click', (e) => {
+                // Detectar click en header o toggle
+                const header = e.target.closest('.periodo-header');
+                if (header) {
+                    const periodo = header.closest('.proyeccion-periodo');
+                    if (periodo) {
+                        this.togglePeriodo(periodo);
+                    }
+                }
             });
-        });
+        }
 
         // Formateo de inputs monetarios
         this.setupFormateoInputs();
@@ -251,18 +257,21 @@ export class APVController {
         
         const content = periodoElement.querySelector('.periodo-content');
         const toggle = periodoElement.querySelector('.periodo-toggle');
-        const isCollapsed = periodoElement.classList.contains('collapsed');
+        
+        if (!content || !toggle) return;
+        
+        const isCollapsed = content.classList.contains('hidden');
         
         if (isCollapsed) {
             // Expandir
-            periodoElement.classList.remove('collapsed');
             content.classList.remove('hidden');
             toggle.textContent = '▼';
+            periodoElement.classList.remove('collapsed');
         } else {
             // Colapsar
-            periodoElement.classList.add('collapsed');
             content.classList.add('hidden');
             toggle.textContent = '▶';
+            periodoElement.classList.add('collapsed');
         }
     }
 
