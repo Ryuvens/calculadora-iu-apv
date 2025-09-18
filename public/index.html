@@ -1254,6 +1254,47 @@
             display: none;
         }
 
+        /* Animación para toast de error */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Estilos para comparación de regímenes */
+        .comparacion-regimenes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .comparacion-columna h5 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .comparacion-columna {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .comparacion-regimenes {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
         /* Selector de período en calculadora */
         .periodo-selector {
             background: #f8f9fa;

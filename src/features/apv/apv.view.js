@@ -1,3 +1,5 @@
+import { fmtCLP } from '../../core/helpers/index.js';
+
 export class APVView {
     constructor() {
         this.setupModalEventListeners();
@@ -57,148 +59,301 @@ export class APVView {
     }
 
     mostrarResultados() {
-        // Mostrar secciones de resultados
-        const recomendacion = document.getElementById('apv-recomendacion');
-        const proyeccion = document.getElementById('apv-proyeccion');
-        const tabla = document.getElementById('apv-comparacion-tabla');
-        
-        if (recomendacion) recomendacion.classList.remove('hidden');
-        if (proyeccion) proyeccion.classList.remove('hidden');
-        if (tabla) tabla.classList.remove('hidden');
+        // Mostrar todas las secciones de resultados
+        const secciones = ['apv-recomendacion', 'apv-proyeccion', 'apv-comparacion-tabla'];
+        secciones.forEach(id => {
+            const seccion = document.getElementById(id);
+            if (seccion) {
+                seccion.classList.remove('hidden');
+            }
+        });
     }
 
     actualizarRegimenA(datos) {
         const card = document.getElementById('card-regime-a');
         if (!card) return;
-        
+
+        // Actualizar montos
         const bonifAmount = card.querySelector('.bonif-amount');
-        const regimeAnnual = card.querySelector('.regime-annual');
-        
-        if (bonifAmount) bonifAmount.textContent = `$${datos.bonificacionMensual.toLocaleString('es-CL')}`;
-        if (regimeAnnual) regimeAnnual.textContent = `$${datos.bonificacionAnual.toLocaleString('es-CL')}`;
+        if (bonifAmount) {
+            bonifAmount.textContent = fmtCLP(datos.bonificacionMensual);
+        }
+
+        const anualAmount = card.querySelector('.regime-annual');
+        if (anualAmount) {
+            anualAmount.textContent = fmtCLP(datos.bonificacionAnual);
+        }
+
+        // Actualizar descripción
+        const description = card.querySelector('.regime-description');
+        if (description) {
+            description.innerHTML = `Este régimen te otorga una Bonificación fiscal por tu ahorro de <strong>${fmtCLP(datos.bonificacionMensual)}</strong> mensuales y al año un monto de:`;
+        }
     }
 
     actualizarRegimenB(datos) {
         const card = document.getElementById('card-regime-b');
         if (!card) return;
-        
+
+        // Actualizar montos
         const savingsAmount = card.querySelector('.savings-amount');
-        const regimeAnnual = card.querySelector('.regime-annual');
-        
-        if (savingsAmount) savingsAmount.textContent = `$${datos.ahorroMensual.toLocaleString('es-CL')}`;
-        if (regimeAnnual) regimeAnnual.textContent = `$${datos.ahorroAnual.toLocaleString('es-CL')}`;
+        if (savingsAmount) {
+            savingsAmount.textContent = fmtCLP(datos.ahorroMensual);
+        }
+
+        const anualAmount = card.querySelector('.regime-annual');
+        if (anualAmount) {
+            anualAmount.textContent = fmtCLP(datos.ahorroAnual);
+        }
+
+        // Actualizar descripción del beneficio
+        const benefit = card.querySelector('.regime-benefit');
+        if (benefit) {
+            benefit.innerHTML = `Este régimen te permitirá ahorrar <strong>${fmtCLP(datos.ahorroMensual)}</strong> en impuestos mensuales y al año un monto de:`;
+        }
     }
 
     marcarRecomendacion(regimen) {
-        // Remover recomendación de todas las cards
+        // Remover recomendación previa
         document.querySelectorAll('.regime-card').forEach(card => {
             card.classList.remove('recommended');
             const badge = card.querySelector('.recommended-badge');
-            if (badge) badge.style.display = 'none';
+            if (badge) badge.remove();
         });
+
+        // Marcar el régimen recomendado
+        const cardId = regimen === 'A' ? 'card-regime-a' : 'card-regime-b';
+        const card = document.getElementById(cardId);
         
-        // Marcar la recomendada
-        const cardRecomendada = document.getElementById(`card-regime-${regimen.toLowerCase()}`);
-        if (cardRecomendada) {
-            cardRecomendada.classList.add('recommended');
-            const badge = cardRecomendada.querySelector('.recommended-badge');
-            if (badge) badge.style.display = 'block';
+        if (card) {
+            card.classList.add('recommended');
+            
+            // Agregar badge
+            const header = card.querySelector('.regime-header');
+            if (header && !header.querySelector('.recommended-badge')) {
+                const badge = document.createElement('div');
+                badge.className = 'recommended-badge';
+                badge.textContent = '✓ Recomendado';
+                header.appendChild(badge);
+            }
         }
     }
 
-    actualizarProyeccion(tipo, años, datos) {
-        const periodoElement = document.querySelector(`[data-periodo="${años}"]`);
+    actualizarProyeccion(regimen, periodo, datos) {
+        // Buscar el contenedor del período
+        const periodoElement = document.querySelector(`.proyeccion-periodo[data-periodo="${periodo}"]`);
         if (!periodoElement) return;
-        
-        let content = periodoElement.querySelector('.periodo-content');
-        if (!content) {
-            content = document.createElement('div');
-            content.className = 'periodo-content';
-            periodoElement.appendChild(content);
-        }
-        
-        // Generar HTML para la proyección
+
+        const content = periodoElement.querySelector('.periodo-content');
+        if (!content) return;
+
+        // Crear HTML para los valores
         const html = `
             <div class="periodo-valores">
                 <div class="valor-item">
                     <span class="valor-label">Rentabilidad:</span>
-                    <span class="valor-amount">$${datos.rentabilidadGenerada.toLocaleString('es-CL')}</span>
+                    <span class="valor-amount">${fmtCLP(datos.rentabilidadGenerada)}</span>
                 </div>
                 <div class="valor-item">
                     <span class="valor-label">Capital ahorrado:</span>
-                    <span class="valor-amount">$${datos.capitalAhorrado.toLocaleString('es-CL')}</span>
+                    <span class="valor-amount">${fmtCLP(datos.capitalAhorrado)}</span>
                 </div>
                 <div class="valor-item">
                     <span class="valor-label">Monto de la rebaja de impuestos:</span>
-                    <span class="valor-amount">$${datos.beneficioAcumulado.toLocaleString('es-CL')}</span>
+                    <span class="valor-amount">${fmtCLP(datos.beneficioAcumulado)}</span>
                 </div>
             </div>
         `;
-        
+
         content.innerHTML = html;
+
+        // Guardar datos para diferentes vistas de régimen
+        content.dataset[`regimen${regimen}`] = JSON.stringify(datos);
+    }
+
+    cambiarVistaProyeccion(regimeSeleccionado) {
+        // Implementar cambio de vista según el tab seleccionado
+        const periodos = document.querySelectorAll('.proyeccion-periodo');
+        
+        periodos.forEach(periodo => {
+            const content = periodo.querySelector('.periodo-content');
+            if (!content) return;
+
+            if (regimeSeleccionado === 'comparacion') {
+                // Mostrar comparación lado a lado
+                const datosA = content.dataset.regimenA ? JSON.parse(content.dataset.regimenA) : null;
+                const datosB = content.dataset.regimenB ? JSON.parse(content.dataset.regimenB) : null;
+                
+                if (datosA && datosB) {
+                    content.innerHTML = this.generarHTMLComparacion(datosA, datosB);
+                }
+            } else {
+                // Mostrar solo el régimen seleccionado
+                const datos = content.dataset[`regimen${regimeSeleccionado.toUpperCase()}`];
+                if (datos) {
+                    const datosParsed = JSON.parse(datos);
+                    content.innerHTML = this.generarHTMLRegimen(datosParsed);
+                }
+            }
+        });
+    }
+
+    generarHTMLRegimen(datos) {
+        return `
+            <div class="periodo-valores">
+                <div class="valor-item">
+                    <span class="valor-label">Rentabilidad:</span>
+                    <span class="valor-amount">${fmtCLP(datos.rentabilidadGenerada)}</span>
+                </div>
+                <div class="valor-item">
+                    <span class="valor-label">Capital ahorrado:</span>
+                    <span class="valor-amount">${fmtCLP(datos.capitalAhorrado)}</span>
+                </div>
+                <div class="valor-item">
+                    <span class="valor-label">Beneficio tributario acumulado:</span>
+                    <span class="valor-amount">${fmtCLP(datos.beneficioAcumulado)}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    generarHTMLComparacion(datosA, datosB) {
+        return `
+            <div class="comparacion-regimenes">
+                <div class="comparacion-columna">
+                    <h5>Régimen A</h5>
+                    <div class="periodo-valores">
+                        <div class="valor-item">
+                            <span class="valor-label">Capital ahorrado:</span>
+                            <span class="valor-amount">${fmtCLP(datosA.capitalAhorrado)}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="valor-label">Bonificación total:</span>
+                            <span class="valor-amount">${fmtCLP(datosA.beneficioAcumulado)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparacion-columna">
+                    <h5>Régimen B</h5>
+                    <div class="periodo-valores">
+                        <div class="valor-item">
+                            <span class="valor-label">Capital ahorrado:</span>
+                            <span class="valor-amount">${fmtCLP(datosB.capitalAhorrado)}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="valor-label">Ahorro tributario:</span>
+                            <span class="valor-amount">${fmtCLP(datosB.beneficioAcumulado)}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     actualizarTablaComparativa(datos) {
         const tbody = document.getElementById('tbody-comparacion');
         if (!tbody) return;
-        
+
         const html = `
             <tr>
-                <td><strong>Ahorro mensual</strong></td>
-                <td>$${datos.sinAPV.ahorroMensual.toLocaleString('es-CL')}</td>
-                <td>$${datos.conAPV.ahorroMensual.toLocaleString('es-CL')}</td>
+                <td>Ahorro mensual</td>
+                <td>${fmtCLP(datos.sinAPV.ahorroMensual)}</td>
+                <td>${fmtCLP(datos.conAPV.ahorroMensual)}</td>
             </tr>
             <tr>
-                <td><strong>Sueldo afecto a impuestos</strong></td>
-                <td>$${datos.sinAPV.sueldoAfecto.toLocaleString('es-CL')}</td>
-                <td>$${datos.conAPV.sueldoAfecto.toLocaleString('es-CL')}</td>
+                <td>Tu sueldo mensual afecto a impuestos</td>
+                <td>${fmtCLP(datos.sinAPV.sueldoAfecto)}</td>
+                <td>${fmtCLP(datos.conAPV.sueldoAfecto)}</td>
             </tr>
             <tr>
-                <td><strong>Impuesto a pagar</strong></td>
-                <td>$${datos.sinAPV.impuestoPagar.toLocaleString('es-CL')}</td>
-                <td>$${datos.conAPV.impuestoPagar.toLocaleString('es-CL')}</td>
+                <td>Impuesto a pagar mensual</td>
+                <td>${fmtCLP(datos.sinAPV.impuestoPagar)}</td>
+                <td>${fmtCLP(datos.conAPV.impuestoPagar)}</td>
             </tr>
             <tr>
-                <td><strong>Ahorro en impuestos</strong></td>
-                <td>$${datos.sinAPV.ahorroImpuesto.toLocaleString('es-CL')}</td>
-                <td>$${datos.conAPV.ahorroImpuesto.toLocaleString('es-CL')}</td>
+                <td>Ahorro en impuesto mensual</td>
+                <td>${fmtCLP(datos.sinAPV.ahorroImpuesto)}</td>
+                <td>${fmtCLP(datos.conAPV.ahorroImpuesto)}</td>
             </tr>
             <tr>
-                <td><strong>Bonificación fiscal</strong></td>
-                <td>$${datos.sinAPV.bonificacionFiscal.toLocaleString('es-CL')}</td>
-                <td>$${datos.conAPV.bonificacionFiscal.toLocaleString('es-CL')}</td>
+                <td>Bonificación Fiscal mensual</td>
+                <td>${fmtCLP(datos.sinAPV.bonificacionFiscal)}</td>
+                <td>${fmtCLP(datos.conAPV.bonificacionFiscal)}</td>
             </tr>
         `;
-        
+
         tbody.innerHTML = html;
+
+        // Resaltar diferencias
+        this.resaltarDiferencias(tbody);
     }
 
-    cambiarVistaProyeccion(regime) {
-        // Esta función se puede expandir para mostrar diferentes vistas según el régimen
-        console.log(`Cambiando vista de proyección a régimen: ${regime}`);
+    resaltarDiferencias(tbody) {
+        const filas = tbody.querySelectorAll('tr');
+        filas.forEach(fila => {
+            const celdas = fila.querySelectorAll('td');
+            if (celdas.length === 3) {
+                const sinAPV = celdas[1].textContent;
+                const conAPV = celdas[2].textContent;
+                
+                if (sinAPV !== conAPV) {
+                    celdas[2].style.fontWeight = 'bold';
+                    celdas[2].style.color = 'var(--success-color)';
+                }
+            }
+        });
+    }
+
+    actualizarParametros(parametros) {
+        // Actualizar valores en el modal
+        const paramUF = document.getElementById('param-uf');
+        const paramUTM = document.getElementById('param-utm');
+        const paramRentabilidad = document.getElementById('param-rentabilidad');
+        
+        if (paramUF) paramUF.textContent = fmtCLP(Math.round(parametros.valorUF));
+        if (paramUTM) paramUTM.textContent = fmtCLP(Math.round(parametros.valorUTM));
+        if (paramRentabilidad) {
+            paramRentabilidad.textContent = `${(parametros.rentabilidadAnual * 100).toFixed(3)}%`;
+        }
     }
 
     mostrarError(mensaje) {
-        // Crear o actualizar elemento de error
-        let errorElement = document.getElementById('apv-error');
-        if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.id = 'apv-error';
-            errorElement.className = 'error-message';
-            
-            // Insertar después del botón calcular
-            const btnCalcular = document.getElementById('btn-calcular-apv');
-            if (btnCalcular) {
-                btnCalcular.parentNode.insertBefore(errorElement, btnCalcular.nextSibling);
-            }
+        // Crear toast de error
+        const existingToast = document.querySelector('.toast-error');
+        if (existingToast) {
+            existingToast.remove();
         }
-        
-        errorElement.textContent = mensaje;
-        errorElement.style.display = 'block';
-        
-        // Ocultar después de 5 segundos
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-error';
+        toast.textContent = mensaje;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+        `;
+
+        document.body.appendChild(toast);
+
         setTimeout(() => {
-            errorElement.style.display = 'none';
+            toast.remove();
         }, 5000);
+    }
+
+    limpiarResultados() {
+        // Ocultar secciones de resultados
+        const secciones = ['apv-recomendacion', 'apv-proyeccion', 'apv-comparacion-tabla'];
+        secciones.forEach(id => {
+            const seccion = document.getElementById(id);
+            if (seccion) {
+                seccion.classList.add('hidden');
+            }
+        });
     }
 }
