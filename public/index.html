@@ -1228,6 +1228,20 @@
             border-bottom: 1px solid var(--border-color);
         }
 
+        /* CSS de seguridad para modal de parámetros */
+        #modal-parametros.hidden {
+            display: none !important;
+        }
+        
+        /* Asegurar que el modal esté oculto por defecto */
+        #modal-parametros {
+            display: none;
+        }
+        
+        #modal-parametros:not(.hidden) {
+            display: flex !important;
+        }
+
         /* Selector de período en calculadora */
         .periodo-selector {
             background: #f8f9fa;
