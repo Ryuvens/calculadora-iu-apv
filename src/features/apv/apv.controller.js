@@ -173,15 +173,21 @@ export class APVController {
         // Mostrar secciones ocultas
         this.view.mostrarResultados();
         
-        // Actualizar cards de régimen
+        // Determinar cuál es el recomendado
+        const aEsRecomendado = (this.regimenSeleccionado === 'comparar' && recomendacion === 'A') || 
+                              this.regimenSeleccionado === 'a';
+        const bEsRecomendado = (this.regimenSeleccionado === 'comparar' && recomendacion === 'B') || 
+                              this.regimenSeleccionado === 'b';
+        
+        // Actualizar cards de régimen con indicador de recomendación
         if (regimenA) {
-            this.view.actualizarRegimenA(regimenA);
+            this.view.actualizarRegimenA(regimenA, aEsRecomendado);
         }
         if (regimenB) {
-            this.view.actualizarRegimenB(regimenB);
+            this.view.actualizarRegimenB(regimenB, bEsRecomendado);
         }
         
-        // Marcar régimen recomendado
+        // Marcar régimen recomendado visualmente
         if (this.regimenSeleccionado === 'comparar') {
             this.view.marcarRecomendacion(recomendacion);
         }

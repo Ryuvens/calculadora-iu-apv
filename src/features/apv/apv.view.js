@@ -69,47 +69,63 @@ export class APVView {
         });
     }
 
-    actualizarRegimenA(datos) {
+    actualizarRegimenA(datos, esRecomendado = false) {
         const card = document.getElementById('card-regime-a');
         if (!card) return;
 
         // Actualizar montos
-        const bonifAmount = card.querySelector('.bonif-amount');
-        if (bonifAmount) {
-            bonifAmount.textContent = fmtCLP(datos.bonificacionMensual);
-        }
-
         const anualAmount = card.querySelector('.regime-annual');
         if (anualAmount) {
             anualAmount.textContent = fmtCLP(datos.bonificacionAnual);
         }
 
-        // Actualizar descripción
+        // Actualizar descripción según si es recomendado o no
         const description = card.querySelector('.regime-description');
         if (description) {
-            description.innerHTML = `Este régimen te otorga una Bonificación fiscal por tu ahorro de <strong>${fmtCLP(datos.bonificacionMensual)}</strong> mensuales y al año un monto de:`;
+            if (esRecomendado) {
+                description.innerHTML = `
+                    De acuerdo a tu renta mensual y el monto de ahorro ingresado, 
+                    el régimen más adecuado para tus depósitos es el <strong>Régimen A</strong>.<br><br>
+                    Este régimen te otorga una Bonificación fiscal por tu ahorro de 
+                    <strong>${fmtCLP(datos.bonificacionMensual)}</strong> mensuales 
+                    y al año un monto de:
+                `;
+            } else {
+                description.innerHTML = `
+                    Este régimen te otorga una Bonificación fiscal por tu ahorro de 
+                    <strong>${fmtCLP(datos.bonificacionMensual)}</strong> mensuales 
+                    y al año un monto de:
+                `;
+            }
         }
     }
 
-    actualizarRegimenB(datos) {
+    actualizarRegimenB(datos, esRecomendado = false) {
         const card = document.getElementById('card-regime-b');
         if (!card) return;
 
         // Actualizar montos
-        const savingsAmount = card.querySelector('.savings-amount');
-        if (savingsAmount) {
-            savingsAmount.textContent = fmtCLP(datos.ahorroMensual);
-        }
-
         const anualAmount = card.querySelector('.regime-annual');
         if (anualAmount) {
             anualAmount.textContent = fmtCLP(datos.ahorroAnual);
         }
 
-        // Actualizar descripción del beneficio
-        const benefit = card.querySelector('.regime-benefit');
-        if (benefit) {
-            benefit.innerHTML = `Este régimen te permitirá ahorrar <strong>${fmtCLP(datos.ahorroMensual)}</strong> en impuestos mensuales y al año un monto de:`;
+        // Actualizar descripción según si es recomendado o no
+        const description = card.querySelector('.regime-description');
+        if (description) {
+            if (esRecomendado) {
+                description.innerHTML = `
+                    De acuerdo a tu renta mensual y el monto de ahorro ingresado, 
+                    el régimen más adecuado para tus depósitos es el <strong>Régimen B</strong>.<br><br>
+                    Este régimen te permitirá ahorrar <strong>${fmtCLP(datos.ahorroMensual)}</strong> 
+                    en impuestos mensuales y al año un monto de:
+                `;
+            } else {
+                description.innerHTML = `
+                    Este régimen te permitirá ahorrar <strong>${fmtCLP(datos.ahorroMensual)}</strong> 
+                    en impuestos mensuales y al año un monto de:
+                `;
+            }
         }
     }
 
