@@ -280,10 +280,38 @@ export class APVView {
         `;
     }
 
-    actualizarTablaComparativa(datos) {
-        const tbody = document.getElementById('tbody-comparacion');
-        if (!tbody) return;
+    actualizarTablaComparativa(datos, regimen = 'B') {
+        // Actualizar título
+        const titulo = document.getElementById('titulo-comparacion');
+        if (titulo) {
+            if (regimen === 'ambos') {
+                titulo.textContent = 'Comparación con y sin APV - Ambos Regímenes';
+            } else {
+                titulo.textContent = `Comparación con y sin APV en Régimen Tributario ${regimen}`;
+            }
+        }
+        
+        // Si es comparación, mostrar ambas tablas
+        if (regimen === 'ambos') {
+            this.mostrarTablaRegimenA(datos.regimenA);
+            this.mostrarTablaRegimenB(datos.regimenB);
+            document.getElementById('tabla-regimen-a').classList.remove('hidden');
+            document.getElementById('tabla-regimen-b').classList.remove('hidden');
+        } else if (regimen === 'A') {
+            this.mostrarTablaRegimenA(datos);
+            document.getElementById('tabla-regimen-a').classList.remove('hidden');
+            document.getElementById('tabla-regimen-b').classList.add('hidden');
+        } else {
+            this.mostrarTablaRegimenB(datos);
+            document.getElementById('tabla-regimen-b').classList.remove('hidden');
+            document.getElementById('tabla-regimen-a').classList.add('hidden');
+        }
+    }
 
+    mostrarTablaRegimenA(datos) {
+        const tbody = document.getElementById('tbody-comparacion-a');
+        if (!tbody) return;
+        
         const html = `
             <tr>
                 <td>Ahorro mensual</td>
@@ -301,21 +329,43 @@ export class APVView {
                 <td>${fmtCLP(datos.conAPV.impuestoPagar)}</td>
             </tr>
             <tr>
-                <td>Ahorro en impuesto mensual</td>
-                <td>${fmtCLP(datos.sinAPV.ahorroImpuesto)}</td>
-                <td>${fmtCLP(datos.conAPV.ahorroImpuesto)}</td>
-            </tr>
-            <tr>
-                <td>Bonificación Fiscal mensual</td>
+                <td><strong>Bonificación Fiscal mensual</strong></td>
                 <td>${fmtCLP(datos.sinAPV.bonificacionFiscal)}</td>
-                <td>${fmtCLP(datos.conAPV.bonificacionFiscal)}</td>
+                <td class="destacado">${fmtCLP(datos.conAPV.bonificacionFiscal)}</td>
             </tr>
         `;
-
+        
         tbody.innerHTML = html;
+    }
 
-        // Resaltar diferencias
-        this.resaltarDiferencias(tbody);
+    mostrarTablaRegimenB(datos) {
+        const tbody = document.getElementById('tbody-comparacion-b');
+        if (!tbody) return;
+        
+        const html = `
+            <tr>
+                <td>Ahorro mensual</td>
+                <td>${fmtCLP(datos.sinAPV.ahorroMensual)}</td>
+                <td>${fmtCLP(datos.conAPV.ahorroMensual)}</td>
+            </tr>
+            <tr>
+                <td>Tu sueldo mensual afecto a impuestos</td>
+                <td>${fmtCLP(datos.sinAPV.sueldoAfecto)}</td>
+                <td>${fmtCLP(datos.conAPV.sueldoAfecto)}</td>
+            </tr>
+            <tr>
+                <td>Impuesto a pagar mensual</td>
+                <td>${fmtCLP(datos.sinAPV.impuestoPagar)}</td>
+                <td>${fmtCLP(datos.conAPV.impuestoPagar)}</td>
+            </tr>
+            <tr>
+                <td><strong>Ahorro en Impuesto mensual</strong></td>
+                <td>${fmtCLP(datos.sinAPV.ahorroImpuesto)}</td>
+                <td class="destacado">${fmtCLP(datos.conAPV.ahorroImpuesto)}</td>
+            </tr>
+        `;
+        
+        tbody.innerHTML = html;
     }
 
     resaltarDiferencias(tbody) {

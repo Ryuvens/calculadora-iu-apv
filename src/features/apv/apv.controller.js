@@ -227,24 +227,26 @@ export class APVController {
     }
 
     actualizarTablaComparativa() {
-        // Evitar recálculo si no hay resultados
         if (!this.resultadosActuales) return;
         
         const rentaLiquida = parseCLP(document.getElementById('renta-liquida').value);
         const montoAPV = parseCLP(document.getElementById('monto-apv').value);
         
-        // Validar antes de generar tabla
         if (!rentaLiquida || !montoAPV) return;
         
-        // Generar datos para la tabla
-        let datosTabla;
-        if (this.regimenSeleccionado === 'comparar' || this.regimenSeleccionado === 'b') {
-            datosTabla = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'B');
+        // Determinar qué tablas mostrar
+        if (this.regimenSeleccionado === 'comparar') {
+            // Generar datos para ambas tablas
+            const datosA = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'A');
+            const datosB = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'B');
+            this.view.actualizarTablaComparativa({ regimenA: datosA, regimenB: datosB }, 'ambos');
+        } else if (this.regimenSeleccionado === 'a') {
+            const datos = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'A');
+            this.view.actualizarTablaComparativa(datos, 'A');
         } else {
-            datosTabla = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'A');
+            const datos = this.service.generarTablaComparativa(rentaLiquida, montoAPV, 'B');
+            this.view.actualizarTablaComparativa(datos, 'B');
         }
-        
-        this.view.actualizarTablaComparativa(datosTabla);
     }
 
     cambiarTabProyeccion(regime) {

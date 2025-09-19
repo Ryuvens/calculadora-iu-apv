@@ -1320,20 +1320,70 @@
 
         .tabla-comparacion {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .tabla-comparacion thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .tabla-comparacion th {
-            background: #f5f5f5;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
             font-weight: 600;
+            color: white;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .tabla-comparacion td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tabla-comparacion tbody tr:last-child td {
+            border-bottom: none;
+            font-weight: bold;
+        }
+
+        .tabla-comparacion tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .tabla-comparacion tbody tr:hover {
+            background-color: #e3f2fd;
+            transition: background-color 0.3s;
+        }
+
+        .tabla-comparacion .destacado {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .tabla-wrapper {
+            margin: 20px 0;
+        }
+
+        .tabla-wrapper + .tabla-wrapper {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .tabla-nota {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+            color: #856404;
+            border-radius: 4px;
         }
 
         /* CSS de seguridad para modal de parámetros */
@@ -1714,19 +1764,43 @@
 
             <!-- Comparación Con y Sin APV -->
             <div id="apv-comparacion-tabla" class="apv-comparacion-tabla hidden">
-                <h3>Comparación con y sin APV</h3>
-                <table class="tabla-comparacion">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Sin APV</th>
-                            <th>Con APV</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-comparacion">
-                        <!-- Se llenará dinámicamente -->
-                    </tbody>
-                </table>
+                <!-- El título se actualizará dinámicamente -->
+                <h3 id="titulo-comparacion">Comparación con y sin APV</h3>
+                
+                <!-- Contenedor para tabla del Régimen A -->
+                <div id="tabla-regimen-a" class="tabla-wrapper hidden">
+                    <table class="tabla-comparacion">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sin APV</th>
+                                <th>Con APV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-comparacion-a">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                    <p class="tabla-nota">
+                        *Tienes una bonificación anual de un 15% de lo ahorrado, con tope de 6 UTM ($415.590 aproximados).
+                    </p>
+                </div>
+                
+                <!-- Contenedor para tabla del Régimen B -->
+                <div id="tabla-regimen-b" class="tabla-wrapper hidden">
+                    <table class="tabla-comparacion">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sin APV</th>
+                                <th>Con APV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-comparacion-b">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Link de parámetros -->
