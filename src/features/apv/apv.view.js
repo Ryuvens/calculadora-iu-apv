@@ -281,17 +281,7 @@ export class APVView {
     }
 
     actualizarTablaComparativa(datos, regimen = 'B') {
-        // Actualizar título
-        const titulo = document.getElementById('titulo-comparacion');
-        if (titulo) {
-            if (regimen === 'ambos') {
-                titulo.textContent = 'Comparación con y sin APV - Ambos Regímenes';
-            } else {
-                titulo.textContent = `Comparación con y sin APV en Régimen Tributario ${regimen}`;
-            }
-        }
-        
-        // Si es comparación, mostrar ambas tablas
+        // Si es comparación, mostrar ambas tablas (sin título general)
         if (regimen === 'ambos') {
             this.mostrarTablaRegimenA(datos.regimenA);
             this.mostrarTablaRegimenB(datos.regimenB);

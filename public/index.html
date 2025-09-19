@@ -1366,14 +1366,28 @@
             font-size: 1.1em;
         }
 
+        .tabla-titulo {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
         .tabla-wrapper {
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .tabla-wrapper + .tabla-wrapper {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e0e0e0;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #e0e0e0;
+        }
+
+        /* Asegurar que la nota siempre esté pegada a la tabla del Régimen A */
+        #tabla-regimen-a .tabla-nota {
+            margin-top: 10px;
+            margin-bottom: 0;
         }
 
         .tabla-nota {
@@ -1764,11 +1778,9 @@
 
             <!-- Comparación Con y Sin APV -->
             <div id="apv-comparacion-tabla" class="apv-comparacion-tabla hidden">
-                <!-- El título se actualizará dinámicamente -->
-                <h3 id="titulo-comparacion">Comparación con y sin APV</h3>
-                
                 <!-- Contenedor para tabla del Régimen A -->
                 <div id="tabla-regimen-a" class="tabla-wrapper hidden">
+                    <h4 class="tabla-titulo">Comparación con y sin APV en Régimen Tributario A</h4>
                     <table class="tabla-comparacion">
                         <thead>
                             <tr>
@@ -1788,6 +1800,7 @@
                 
                 <!-- Contenedor para tabla del Régimen B -->
                 <div id="tabla-regimen-b" class="tabla-wrapper hidden">
+                    <h4 class="tabla-titulo">Comparación con y sin APV en Régimen Tributario B</h4>
                     <table class="tabla-comparacion">
                         <thead>
                             <tr>
