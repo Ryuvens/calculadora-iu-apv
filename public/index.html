@@ -1053,11 +1053,28 @@
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             position: relative;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
 
         .regime-card.recommended {
-            border: 2px solid var(--success-color);
-            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+            border: 3px solid #4CAF50;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.25);
+            background: linear-gradient(to bottom, #ffffff, #f1f8e9);
+            transform: scale(1.02);
+        }
+
+        .regime-card.recommended::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0.3;
         }
 
         .regime-header {
@@ -1081,19 +1098,53 @@
             background: #d32f2f;
         }
 
-        .regime-card.recommended .regime-letter {
-            background: #1976d2;
-        }
-
         .recommended-badge {
             position: absolute;
-            right: 0;
-            top: -10px;
-            background: var(--success-color);
+            right: -10px;
+            top: -15px;
+            background: #4CAF50;
             color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .recommended-badge::before {
+            content: '★';
+            font-size: 16px;
+        }
+
+        /* Animación de pulso suave para llamar la atención */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 6px 20px rgba(76, 175, 80, 0.25);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+            }
+            100% {
+                box-shadow: 0 6px 20px rgba(76, 175, 80, 0.25);
+            }
+        }
+
+        .regime-card.recommended {
+            animation: pulse 2s infinite;
+        }
+
+        /* Mejorar contraste del texto en card recomendada */
+        .regime-card.recommended .regime-letter {
+            background: #4CAF50;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .regime-card.recommended .regime-name {
+            font-weight: bold;
+            color: #2e7d32;
         }
 
         .regime-annual {
