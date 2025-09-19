@@ -955,13 +955,46 @@
 
         /* Módulo APV */
         .apv-header {
-            text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        .apv-header h2 {
+            text-align: left !important;
+            margin-bottom: 10px;
         }
 
         .apv-subtitle {
+            text-align: left !important;
             color: var(--text-secondary);
             margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .apv-intro {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .apv-intro h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .apv-intro p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .apv-entrada h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
         }
 
         .apv-entrada {
@@ -1484,12 +1517,19 @@
         <!-- Tab Simulador APV -->
         <section id="apv" class="tab-content">
             <div class="apv-header">
-                <h2>Simulador APV</h2>
-                <p class="apv-subtitle">Analiza el beneficio tributario de tu ahorro previsional</p>
+                <h2 style="text-align: left;">Simulador APV</h2>
+                <p class="apv-subtitle" style="text-align: left;">Analiza el beneficio tributario de tu ahorro previsional</p>
+                
+                <div class="apv-intro">
+                    <h3>¿Para qué sirven los regímenes tributarios de APV?</h3>
+                    <p>Sirven para obtener una Bonificación Fiscal de lo ahorrado en el año o para rebajar tu base imponible mensual y así pagar menos impuestos y aumentar tu sueldo. Descubre cuál es la mejor opción para ti.</p>
+                </div>
             </div>
 
             <!-- Entrada de datos -->
             <div class="apv-entrada">
+                <h3>Descubre el Beneficio Tributario que te conviene</h3>
+                
                 <div class="entrada-grupo">
                     <label for="renta-liquida">Remuneración mensual líquida*</label>
                     <input type="text" id="renta-liquida" class="money-input" placeholder="$0">
