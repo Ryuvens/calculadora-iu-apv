@@ -60,7 +60,7 @@ export class APVService {
                 console.log(`✅ Tramos APV cargados desde localStorage: ${this.tramosImpuesto.length} tramos`);
             } else {
                 // SEGUNDO: Intentar cargar desde archivo JSON
-                const response = await fetch(`/data/tramos/sii-${anio}-${mesStr}.json`);
+                const response = await fetch(`data/tramos/sii-${anio}-${mesStr}.json`);
                 
                 if (response.ok) {
                     const data = await response.json();

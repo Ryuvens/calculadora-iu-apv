@@ -26,7 +26,7 @@ export class UFUTMService {
         
         // Segundo: intentar desde archivo JSON
         try {
-            const response = await fetch(`/data/${anio}/${anio}-${mesStr}.json`);
+            const response = await fetch(`data/${anio}/${anio}-${mesStr}.json`);
             if (response.ok) {
                 const data = await response.json();
                 console.log('✅ Datos UF/UTM cargados desde archivo');

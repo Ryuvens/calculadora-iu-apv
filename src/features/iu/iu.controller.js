@@ -79,7 +79,7 @@ export class IUController {
                 this.mostrarEstadoPeriodo(`Datos cargados: ${this.getNombreMes(mes)} ${anio} (guardados localmente)`);
             } else {
                 // SEGUNDO: Intentar cargar desde archivo JSON
-                const response = await fetch(`/data/tramos/sii-${anio}-${mesStr}.json`);
+                const response = await fetch(`data/tramos/sii-${anio}-${mesStr}.json`);
                 
                 if (!response.ok) {
                     throw new Error(`No hay datos para ${mesStr}/${anio}`);
